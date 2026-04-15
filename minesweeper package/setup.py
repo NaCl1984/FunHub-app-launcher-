@@ -5,7 +5,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setup(
     name="FunHub-minesweeper",
-    version="1.0.2",
+    version="1.0.3",
     py_modules=["minesweeper"],
     description="CLI minesweeper game for FunHud app-launcher",
     long_description=open("README.md", encoding="utf-8").read(),

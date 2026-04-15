@@ -78,7 +78,7 @@ class menuObject():
     
             if executable:
                 try:
-                    subprocess.run([executable], input=b"y\n")
+                    subprocess.run([executable])
                 except KeyboardInterrupt:
                     pass
             else:
@@ -457,7 +457,7 @@ def checkTerminalSize():
 
 def flush_input():
     try:
-        import termios
+        
         termios.tcflush(sys.stdin, termios.TCIFLUSH)
     except ImportError:
         while msvcrt.kbhit():
@@ -520,7 +520,7 @@ def main():
         systemMessage(f'An unexpected error occurred: {exception}', [buttonObject('Ok (exit)', lambda: app_exit(exception))])
     finally:
         if sys.platform != 'win32':
-            termios.tcsetattr(fd,termios.TCSADRAIN, oldSettings)
+            termios.tcsetattr(fd, termios.TCSADRAIN, oldSettings)
         flush_input()
 
 

@@ -3,7 +3,7 @@ A simply CLI minesweeper game for [FunHud app-launcher](https://pypi.org/project
 
 ## Install
 ```bash
-pip install funhub-tic-tac-toe
+pip install funhub-minesweeper
 ```
 ## Quick start
 Write in terminal this command to start game:

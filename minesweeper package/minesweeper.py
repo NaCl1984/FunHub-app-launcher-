@@ -67,15 +67,22 @@ class cellObject():
         self.neighborMines = 0
 
     def getStr(self):
-        if not self.isOpen and not self.isFlag:
-            return f"\x1b[38;5;{backgroundColor};48;5;{254}m{' # ' if not self.isSelected else '[#]'}\x1b[0m" 
-        elif not self.isOpen and self.isFlag:
-            return f"\x1b[38;5;{11};48;5;{backgroundColor}m{' F ' if not self.isSelected else '[F]'}\x1b[0m" 
-        elif self.isOpen and not self.isMine and self.neighborMines > 0:
-            return f"\x1b[38;5;{numbersColors[self.neighborMines - 1]};48;5;{backgroundColor}m{f' {self.neighborMines} ' if not self.isSelected else f'[{self.neighborMines}]'}\x1b[0m" 
-        elif self.isOpen and not self.isMine and self.neighborMines == 0:
+        if not self.isOpen and not self.isFlag: #closed cell
+            cellChar = ' # ' if not self.isSelected else (f'\x1b[38;5;{0}m[' + f'\x1b[38;5;{backgroundColor}m#' + f'\x1b[38;5;{0}m]')
+            return f"\x1b[38;5;{backgroundColor};48;5;{254}m{cellChar}\x1b[0m" 
+        
+        elif not self.isOpen and self.isFlag: #flaged cell
+            cellChar = ' F ' if not self.isSelected else (f'\x1b[38;5;{9}m[' + f'\x1b[38;5;{9}mF' + f'\x1b[38;5;{9}m]')
+            return f"\x1b[38;5;{9};48;5;{240}m{cellChar}\x1b[0m" 
+        
+        elif self.isOpen and not self.isMine and self.neighborMines > 0: #numeric cell
+            cellChar = f' {self.neighborMines} ' if not self.isSelected else (f'\x1b[38;5;{0}m[' + f'\x1b[38;5;{numbersColors[self.neighborMines - 1]}m{self.neighborMines}' + f'\x1b[38;5;{0}m]')
+            return f"\x1b[38;5;{numbersColors[self.neighborMines - 1]};48;5;{backgroundColor}m{cellChar}\x1b[0m" 
+        
+        elif self.isOpen and not self.isMine and self.neighborMines == 0: #empty cell
             return f"\x1b[38;5;{0};48;5;{backgroundColor}m{'   ' if not self.isSelected else '[ ]'}\x1b[0m" 
-        elif self.isOpen and self.isMine:
+        
+        elif self.isOpen and self.isMine: #mine cell
             return f"\x1b[38;5;{0};48;5;{9}m{' * ' if not self.isSelected else '[*]'}\x1b[0m" 
 
     def openCell(self):
@@ -382,7 +389,6 @@ def updateView(gameTime):
 
 def flush_input():
     try:
-        import termios
         termios.tcflush(sys.stdin, termios.TCIFLUSH)
     except ImportError:
         while msvcrt.kbhit():
@@ -413,16 +419,16 @@ def main():
                     if not isGameEnd:
                         if key == keyboard.Key.up:
                             changeSelection('up')
-                            printField()
+                            printField(startedTime=timeStarted)
                         elif key == keyboard.Key.down:
                             changeSelection('down')
-                            printField()
+                            printField(startedTime=timeStarted)
                         elif key == keyboard.Key.right:
                             changeSelection('right')
-                            printField()
+                            printField(startedTime=timeStarted)
                         elif key == keyboard.Key.left:
                             changeSelection('left')
-                            printField()
+                            printField(startedTime=timeStarted)
                         
                         elif key == keyboard.Key.enter:
                             if moves <= 0:
@@ -437,7 +443,7 @@ def main():
                             checkNeighbors(selectedCell)
 
                             if checkDefeat():
-                                printField(isDefeat=True)
+                                printField(isDefeat=True, startedTime=timeStarted)
                                 isGameEnd = True
                                 stop_event.set()
                             
@@ -472,6 +478,7 @@ def main():
 
                     elif (hasattr(key, 'vk') and key.vk == 70) or  key == keyboard.KeyCode.from_char('f') or (hasattr(key, 'char') and key.char == 'f'):
                         gameField[selectedCell].placeFlag()
+                        printField()
                             
     except KeyboardInterrupt:
         flush_input()
