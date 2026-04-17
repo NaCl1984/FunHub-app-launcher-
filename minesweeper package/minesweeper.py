@@ -103,10 +103,10 @@ def printField(startedTime=0, isWin = False, isDefeat = False):
         global gameFieldSize, logo, mines
         termCols, termRows = os.get_terminal_size()
         resulStr = ''
-        logo = logo if gameFieldSize < 40 else 'Minesweeper'
+        newLogo = logo if gameFieldSize < 40 else 'Minesweeper'
         centeredLogo = ''
 
-        for i in logo.splitlines():
+        for i in newLogo.splitlines():
             centeredLogo += ' ' * int((os.get_terminal_size().columns - len(i))//2) + i + '\n'
 
         for r in range(gameFieldSize):
@@ -123,7 +123,7 @@ def printField(startedTime=0, isWin = False, isDefeat = False):
             centeredResulStr += ' ' * int((termCols - (gameFieldSize * 3))//2) + i + '\n'
 
         centeredResulStr = centeredLogo + '\n' + centeredResulStr
-        upperSpace = (termRows - len(centeredResulStr.splitlines()))//2
+        upperSpace = (termRows - len(centeredResulStr.splitlines()))//2 - 1
         
         info = "time: " + getTime(startedTime, getStr=True) + ' ' + f'mines:{mines}'
         info = " " * ((os.get_terminal_size().columns - len(info))//2) + info
@@ -169,6 +169,7 @@ def selectDificulti():
         difilculties = ['Easy', 'Medium', 'Hard', 'Very hard']
         selectedDiff = 0
         prew_cols, prew_rows = 0, 0
+        gameFieldSize = 0
 
         with open(userStatsPath, 'r', encoding='utf-8') as f:
             userStats = json.load(f)
@@ -389,8 +390,9 @@ def updateView(gameTime):
 
 def flush_input():
     try:
+        import termios
         termios.tcflush(sys.stdin, termios.TCIFLUSH)
-    except ImportError:
+    except:
         while msvcrt.kbhit():
             msvcrt.getch()
 
@@ -400,90 +402,95 @@ def main():
     isGameEnd = False
     timeStarted = 0
     try:
-        sys.stdout.write('\033[2J\033[H')
-        sys.stdout.flush()
-        checkTerminalSize()
-        selectDificulti()
-        sys.stdout.write('\033[2J\033[H')
-        sys.stdout.flush()
-        printField()
-        with keyboard.Events() as events:
-            while True:
-                event = events.get(1.0)
-                if event is None:
-                    continue
+        while True:
+            try:
+                sys.stdout.write('\033[2J\033[H')
+                sys.stdout.flush()
+                checkTerminalSize()
+                selectDificulti()
+                sys.stdout.write('\033[2J\033[H')
+                sys.stdout.flush()
+                printField()
+                with keyboard.Events() as events:
+                    while True:
+                        event = events.get(1.0)
+                        if event is None:
+                            continue
 
-                if isinstance(event, keyboard.Events.Press):
-                    key = event.key
+                        if isinstance(event, keyboard.Events.Press):
+                            key = event.key
 
-                    if not isGameEnd:
-                        if key == keyboard.Key.up:
-                            changeSelection('up')
-                            printField(startedTime=timeStarted)
-                        elif key == keyboard.Key.down:
-                            changeSelection('down')
-                            printField(startedTime=timeStarted)
-                        elif key == keyboard.Key.right:
-                            changeSelection('right')
-                            printField(startedTime=timeStarted)
-                        elif key == keyboard.Key.left:
-                            changeSelection('left')
-                            printField(startedTime=timeStarted)
-                        
-                        elif key == keyboard.Key.enter:
-                            if moves <= 0:
-                                placeMines()
-                                timeStarted = time.monotonic()
-                                timerUpdateThread = threading.Thread(target=updateView, args=(timeStarted,), daemon=True)
-                                stop_event.clear()
-                                timerUpdateThread.start()
-                            
-                            moves += 1
-                            gameField[selectedCell].openCell()
-                            checkNeighbors(selectedCell)
-
-                            if checkDefeat():
-                                printField(isDefeat=True, startedTime=timeStarted)
-                                isGameEnd = True
-                                stop_event.set()
-                            
-                            elif checkWin():
-                                printField(isWin=True, startedTime=timeStarted)
-                                with open(userStatsPath, 'r', encoding='utf-8') as f:
-                                    records = json.load(f)
+                            if not isGameEnd:
+                                if key == keyboard.Key.up:
+                                    changeSelection('up')
+                                    printField(startedTime=timeStarted)
+                                elif key == keyboard.Key.down:
+                                    changeSelection('down')
+                                    printField(startedTime=timeStarted)
+                                elif key == keyboard.Key.right:
+                                    changeSelection('right')
+                                    printField(startedTime=timeStarted)
+                                elif key == keyboard.Key.left:
+                                    changeSelection('left')
+                                    printField(startedTime=timeStarted)
                                 
-                                newTime = getTime(timeStarted)
-                                if gameFieldSize == EASY_FIELD_SIZE:
-                                    records['easy'] = (newTime if records['easy'] > newTime else records['easy']) if records['easy'] != 0 else newTime
-                                elif gameFieldSize == MEDIUM_FIELD_SIZE:
-                                    records['medium'] = (newTime if records['medium'] > newTime else records['medium']) if records['medium'] != 0 else newTime
-                                elif gameFieldSize == HARD_FIELD_SIZE:
-                                    records['hard'] = (newTime if records['hard'] > newTime else records['hard']) if records['hard'] != 0 else newTime
-                                elif gameFieldSize == VERY_HARD_FIELD_SIZE:
-                                    records['very hard'] = (newTime if records['very hard'] > newTime else records['very hard']) if records['very hard'] != 0 else newTime
+                                elif key == keyboard.Key.enter:
+                                    if moves <= 0:
+                                        placeMines()
+                                        timeStarted = time.monotonic()
+                                        timerUpdateThread = threading.Thread(target=updateView, args=(timeStarted,), daemon=True)
+                                        stop_event.clear()
+                                        timerUpdateThread.start()
+                                    
+                                    moves += 1
+                                    gameField[selectedCell].openCell()
+                                    checkNeighbors(selectedCell)
 
-                                with open(userStatsPath, 'w') as f:
-                                    json.dump(records, f, ensure_ascii=False, indent=4)
+                                    if checkDefeat():
+                                        printField(isDefeat=True, startedTime=timeStarted)
+                                        isGameEnd = True
+                                        stop_event.set()
+                                    
+                                    elif checkWin():
+                                        printField(isWin=True, startedTime=timeStarted)
+                                        with open(userStatsPath, 'r', encoding='utf-8') as f:
+                                            records = json.load(f)
+                                        
+                                        newTime = getTime(timeStarted)
+                                        if gameFieldSize == EASY_FIELD_SIZE:
+                                            records['easy'] = (newTime if records['easy'] > newTime else records['easy']) if records['easy'] != 0 else newTime
+                                        elif gameFieldSize == MEDIUM_FIELD_SIZE:
+                                            records['medium'] = (newTime if records['medium'] > newTime else records['medium']) if records['medium'] != 0 else newTime
+                                        elif gameFieldSize == HARD_FIELD_SIZE:
+                                            records['hard'] = (newTime if records['hard'] > newTime else records['hard']) if records['hard'] != 0 else newTime
+                                        elif gameFieldSize == VERY_HARD_FIELD_SIZE:
+                                            records['very hard'] = (newTime if records['very hard'] > newTime else records['very hard']) if records['very hard'] != 0 else newTime
 
-                                isGameEnd = True
+                                        with open(userStatsPath, 'w') as f:
+                                            json.dump(records, f, ensure_ascii=False, indent=4)
+
+                                        isGameEnd = True
+                                        stop_event.set()
+                                
+                            if (hasattr(key, 'vk') and key.vk == 82) or key == keyboard.KeyCode.from_char('r') or (hasattr(key, 'char') and key.char == 'r'):
+                                restartProcess()
+                                timeStarted = 0
+                                moves = 0
+                                isGameEnd = False
                                 stop_event.set()
-                        
-                    if (hasattr(key, 'vk') and key.vk == 82) or key == keyboard.KeyCode.from_char('r') or (hasattr(key, 'char') and key.char == 'r'):
-                        restartProcess()
-                        timeStarted = 0
-                        moves = 0
-                        isGameEnd = False
-                        stop_event.set()
-                        printField()
+                                printField()
 
-                    elif (hasattr(key, 'vk') and key.vk == 70) or  key == keyboard.KeyCode.from_char('f') or (hasattr(key, 'char') and key.char == 'f'):
-                        gameField[selectedCell].placeFlag()
-                        printField()
-                            
-    except KeyboardInterrupt:
-        flush_input()
-        os._exit(0)
+                            elif (hasattr(key, 'vk') and key.vk == 70) or  key == keyboard.KeyCode.from_char('f') or (hasattr(key, 'char') and key.char == 'f'):
+                                gameField[selectedCell].placeFlag()
+                                printField()
 
+            except KeyboardInterrupt:
+                timeStarted = 0
+                moves = 0
+                isGameEnd = False
+                stop_event.set()
+                continue
+        
     except Exception as e:
         flush_input()
         print(e)

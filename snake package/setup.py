@@ -4,10 +4,10 @@ with open("README.md", "r", encoding="utf-8") as fh:
     long_description = fh.read()
 
 setup(
-    name="FunHub-minesweeper",
-    version="1.0.7",
-    py_modules=["minesweeper"],
-    description="CLI minesweeper game for FunHud app-launcher",
+    name="funhub-snake",
+    version="1.0.0",
+    py_modules=["snake"],
+    description="CLI snake game for FunHud app-launcher",
     long_description=open("README.md", encoding="utf-8").read(),
     long_description_content_type="text/markdown",
     packages=find_packages(),
@@ -18,7 +18,7 @@ setup(
     ],
     entry_points={
         'console_scripts': [
-            'funhub-minesweeper=minesweeper:main',
+            'funhub-snake=snake:main',
         ],
     },
 )

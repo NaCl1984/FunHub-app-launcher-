@@ -19,3 +19,8 @@ build/
 # OS
 .DS_Store
 Thumbs.db
+
+
+.pypi-token
+publish.ps1
+publish.bat

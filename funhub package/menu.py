@@ -13,6 +13,8 @@ import importlib.util
 import threading
 from pathlib import Path
 import numpy as np
+from importlib.metadata import version
+from packaging.version import parse
 
 warnings.filterwarnings('ignore')
 
@@ -67,6 +69,12 @@ class menuObject():
             return f'*{self.name}' if self.isSelected else f' {self.name}'
         return " "
     
+    def subrocessRun(self, executable):
+        try:
+            subprocess.run([executable])
+        except KeyboardInterrupt:
+            pass
+
     def run(self):
         if self.type == 'local':
             if os.path.exists(self.pluginPath):
@@ -74,13 +82,17 @@ class menuObject():
             else:
                 systemMessage(f'Plugin "{self.name}" not found', [buttonObject('Ok', lambda: None)])
         else:
+            installedVersion = version(self.packageName)
+            url = f"https://pypi.org/pypi/{self.packageName}/json"
+            response = requests.get(url, timeout=5)
+            response.raise_for_status()
+            latestVersion = response.json()["info"]["version"]
             executable = shutil.which(self.commandName)
     
-            if executable:
-                try:
-                    subprocess.run([executable])
-                except KeyboardInterrupt:
-                    pass
+            if executable and not parse(latestVersion) > parse(installedVersion):
+                self.subrocessRun(executable)
+            elif executable and parse(latestVersion) > parse(installedVersion):
+                systemMessage(f'Plugin "{self.name}" not updated to latest vesrion. Update to latest version?',[buttonObject('Cancel', lambda: None), buttonObject('Update', lambda: updatePackage(self.packageName)), buttonObject('Launch with out update', lambda: self.subrocessRun(executable))])
             else:
                 systemMessage(f'Plugin "{self.name}" not installed yet. Install it now?',[buttonObject('Cancel', lambda: None), buttonObject('Install', lambda: installPackage(self.packageName))])
 
@@ -423,12 +435,31 @@ def installPackage(packageName):
         isloadingEvent.set()
         loading = threading.Thread(target=loadingAnimation, args=(-1,), daemon=True)
         loading.start()
-        subprocess.run([sys.executable, '-m', 'pip', 'install', packageName, '--quiet'])
+        subprocess.run([sys.executable, '-m', 'pip', 'install', packageName, '--quiet'], check=True, capture_output=True, text=True)
         isloadingEvent.clear()
         systemMessage(f'Plugin "{packageName}" was successfully installed.',[buttonObject('Ok', lambda: None)])
+    
+    except subprocess.CalledProcessError as e:
+        systemMessage(f'Failed to install plugin "{packageName}". Error: {e.stderr}', [buttonObject('Ok', lambda: None)])
+    
     except Exception as e:
         systemMessage(f'Failed to install plugin "{packageName}". Error: {e}', [buttonObject('Ok', lambda: None)])
 
+def updatePackage(packageName):
+    try:
+        isloadingEvent.set()
+        loading = threading.Thread(target=loadingAnimation, args=(-1,), daemon=True)
+        loading.start()
+        subprocess.run([sys.executable, '-m', 'pip', 'install', packageName, '--quiet', '--upgrade'], check=True, capture_output=True, text=True)
+        isloadingEvent.clear()
+        systemMessage(f'Plugin "{packageName}" was successfully updated.',[buttonObject('Ok', lambda: None)])
+    
+    except subprocess.CalledProcessError as e:
+        systemMessage(f'Failed to install plugin "{packageName}". Error: {e.stderr}', [buttonObject('Ok', lambda: None)])
+    
+    except Exception as e:
+        systemMessage(f'Failed to install plugin "{packageName}". Error: {e}', [buttonObject('Ok', lambda: None)])
+    
 def getPageDimentions(page):
     cols = 0
     for column in page.T:
@@ -457,9 +488,9 @@ def checkTerminalSize():
 
 def flush_input():
     try:
-        
+        import termios
         termios.tcflush(sys.stdin, termios.TCIFLUSH)
-    except ImportError:
+    except:
         while msvcrt.kbhit():
             msvcrt.getch()
 
