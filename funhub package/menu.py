@@ -82,7 +82,10 @@ class menuObject():
             else:
                 systemMessage(f'Plugin "{self.name}" not found', [buttonObject('Ok', lambda: None)])
         else:
-            installedVersion = version(self.packageName)
+            try:
+                installedVersion = version(self.packageName)
+            except:
+                installedVersion = None
             url = f"https://pypi.org/pypi/{self.packageName}/json"
             response = requests.get(url, timeout=5)
             response.raise_for_status()

@@ -178,7 +178,7 @@ def printField(snake, isWin = False, isDefeat = False, isPaused=False):
             centeredResulStr += ' ' * int((termCols - (gameFieldSize * 2))//2) + i + '\n'
 
         centeredResulStr = centeredLogo + '\n' + counter + '\n' + centeredResulStr
-        upperSpace = (termRows - len(centeredResulStr.splitlines()))//2
+        upperSpace = (termRows - len(centeredResulStr.splitlines()))//2 - 1
 
         endGameText = ''
         if isWin:
