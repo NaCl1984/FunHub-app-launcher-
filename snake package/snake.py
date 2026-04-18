@@ -49,6 +49,19 @@ moveDirection = 'right'
 snakeColor = 'red'
 snakeColorsDict = {'red':(9, 1, 124),'yellow':(178 ,172 , 166) ,'blue':(12, 4, 20), 'light blue':(39, 33, 27), 'purple':(99, 56, 55)}
 
+fieldSizesIkons = {
+    'small':'\033[38;5;34m.\033[0m', 
+    'medium':'\033[38;5;2m■\033[0m', 
+    'big':'\033[38;5;2m■\033[38;5;34m■\033[0m', 
+    'large':'\033[38;5;2m█\033[38;5;34m█\033[38;5;2m█\033[0m'
+    }
+
+snakeSpeedsIkons = {
+    'slow':'\033[38;5;94m@\033[38;5;143m_.\033[0m', 
+    'moderate':f'\033[38;5;{snakeColorsDict[snakeColor][2]}m~\033[38;5;{snakeColorsDict[snakeColor][1]}m~\033[38;5;{snakeColorsDict[snakeColor][2]}m~\033[38;5;{snakeColorsDict[snakeColor][0]}m:\033[0m', 
+    'fast':'>>\033[38;5;94m--\033[38;5;250m>\033[0m'
+    }
+
 gameField = np.array([])
 
 logo = r'''
@@ -70,12 +83,20 @@ class cellObject():
         self.isSnakeHead = False
         self.isSnakeBody = False
         self.isStone = False
-        self.grassPattern = (random.choice(["  ","  ", " #", "# ", "▒▒", "▓▓", "* ", " *", '. ', ' .', '▒▓', '▒ ']))
-        self.grassColors = (random.choice([2, 28, 34]), random.choice([70, 64, 10]))
+        self.isGravel = False
+        self.isSand = False
+        self.pattern = (random.choice(["  ","  ", " #", "# ", "▒▒", "▓▓", "* ", " *", '. ', ' .', '▒▓', '▒ ']))
+        self.grassColors = (random.choice([2, 34]), random.choice([70, 76, 10]))
+        self.stoneColors = (random.choice([245, 244, 246]), random.choice([240, 239, 241]))
+        self.gravelColors = (random.choice([245, 247, 246]), random.choice([243, 242, 244]))
+        self.sandColors = (random.choice([ 228, 229]), random.choice([ 221]))
 
-    def changeGrassPattern(self):
-        self.grassPattern = (random.choice(["  ", " #", "# ", "▒▒", "▓▓", "* ", " *", '..']))
-        self.grassColors = (random.choice([ 2, 34]), random.choice([70, 76, 10]))
+    def changePatterns(self):
+        self.pattern = (random.choice(["  ","  ", " #", "# ", "▒▒", "▓▓", "* ", " *", '. ', ' .', '▒▓', '▒ ']))
+        self.grassColors = (random.choice([2, 34]), random.choice([70, 76, 10]))
+        self.stoneColors = (random.choice([245, 244, 246]), random.choice([240, 239, 241]))
+        self.gravelColors = (random.choice([245, 247, 246]), random.choice([243, 242, 244]))
+        self.sandColors = (random.choice([228, 229]), random.choice([221]))
 
     def getStr(self, direction=None):
         snakeHeadColor = snakeColorsDict[snakeColor][0]
@@ -83,8 +104,6 @@ class cellObject():
         snakeBodyFountColor = snakeColorsDict[snakeColor][2]
         appleBackgroundColor = 88
         appleFontColor = 34
-        stoneBacgroundColor = 245
-        stoneFontColor = 240
         if self.isSnakeHead and direction:
             match direction:
                 case 'up':
@@ -100,9 +119,13 @@ class cellObject():
         elif self.isApple:
             return f"\033[38;5;{appleFontColor}m\033[48;5;{appleBackgroundColor}m" + "@/" + "\033[0m"
         elif self.isStone:
-            return f"\033[38;5;{stoneFontColor}m\033[48;5;{stoneBacgroundColor}m" + "L " + "\033[0m"
+            return f"\033[38;5;{self.stoneColors[1]}m\033[48;5;{self.stoneColors[0]}m" + "L " + "\033[0m"
+        elif self.isGravel:
+            return f"\033[38;5;{self.gravelColors[1]}m\033[48;5;{self.gravelColors[0]}m" + self.pattern + "\033[0m"
+        elif self.isSand:
+            return f"\033[38;5;{self.sandColors[1]}m\033[48;5;{self.sandColors[0]}m" + self.pattern + "\033[0m"
         else:
-            return f"\033[38;5;{self.grassColors[1]}m\033[48;5;{self.grassColors[0]}m" + self.grassPattern + "\033[0m"
+            return f"\033[38;5;{self.grassColors[1]}m\033[48;5;{self.grassColors[0]}m" + self.pattern + "\033[0m"
 
 class snakeObject():
     def __init__(self):
@@ -111,15 +134,16 @@ class snakeObject():
         self.bodyCount = 2
 
     def setNewSnakePosition(self, gameField):
-        if not checkWin(gameFieldSize, self) and not checkDefeat(gameFieldSize, self): 
-            if gameField[self.coordinateHistory[0]].isApple:
-                self.bodyCount += 1 
-                gameField[self.coordinateHistory[0]].isApple = False
-                placeApple(gameField)
+        if not checkWin(gameFieldSize, self) and not checkDefeat(gameFieldSize, self):
 
             gameField[self.coordinateHistory[0]].isSnakeHead = True
             gameField[self.coordinateHistory[1]].isSnakeHead = False
             gameField[self.coordinateHistory[1]].isSnakeBody = True
+
+            if gameField[self.coordinateHistory[0]].isApple:
+                self.bodyCount += 1 
+                gameField[self.coordinateHistory[0]].isApple = False
+                placeApple(gameField)
 
             if self.bodyCount < len(self.coordinateHistory) - 1:
                 gameField[self.coordinateHistory.pop()].isSnakeBody = False
@@ -161,7 +185,7 @@ def printField(snake, isWin = False, isDefeat = False, isPaused=False):
 
         countApples = snake.bodyCount - 2
 
-        counter = 'Apples eat: ' + str(countApples)
+        counter = 'Apples eated: ' + str(countApples)
         counter = ' ' * int((os.get_terminal_size().columns - len(counter))//2) + counter + '\n'
 
         for r in range(gameFieldSize):
@@ -270,10 +294,12 @@ def settingsMenu():
 
             for i in settingsMenu:
                 if isinstance(i, settingsObject):
-                    if i.name != "Snake color":
-                        menuToPrint += ' ' * int((termCols - len(i.getStr()))//2) + i.getStr() + '\n'
-                    else:
-                        menuToPrint += ' ' * int((termCols - len(i.getStr()))//2) + i.getStr() + " " +  (f"\033[38;5;{snakeColorsDict[i.content[i.selectedItem]][2]}m\033[48;5;{snakeColorsDict[i.content[i.selectedItem]][1]}m" + "##" + "\033[0m" + f"\033[38;5;0m\033[48;5;{snakeColorsDict[i.content[i.selectedItem]][0]}m" + " :" + "\033[0m") + '\n'
+                    if i.name == "Field size":
+                        menuToPrint += ' ' * int((termCols - len(i.getStr()))//2) + i.getStr() +  "     " + (fieldSizesIkons[i.content[i.selectedItem]]) + '\n' + '\n'
+                    elif i.name == 'Snake speed':
+                        menuToPrint += ' ' * int((termCols - len(i.getStr()))//2) + i.getStr() +  "     " + (snakeSpeedsIkons[i.content[i.selectedItem]]) + '\n' + '\n'
+                    elif i.name == 'Snake color':
+                        menuToPrint += ' ' * int((termCols - len(i.getStr()))//2) + i.getStr() + "     " +  (f"\033[38;5;{snakeColorsDict[i.content[i.selectedItem]][2]}m\033[48;5;{snakeColorsDict[i.content[i.selectedItem]][1]}m" + "##" + "\033[0m" + f"\033[38;5;0m\033[48;5;{snakeColorsDict[i.content[i.selectedItem]][0]}m" + " :" + "\033[0m") + '\n' + '\n'
                 else:
                     if selectedSetting != len(settingsMenu) - 1:
                         menuToPrint += '\n' + ' ' * int((termCols - len(i))//2) + ' ' + i + '\n'
@@ -397,6 +423,8 @@ def restartProcess(snake):
             i.isSnakeHead = False
             i.isSnakeBody = False
             i.isStone = False
+            i.isGravel = False
+            i.isSand = False
     moveDirection = 'right'
     sys.stdout.write('\033[2J\033[H')
     sys.stdout.flush()
@@ -464,6 +492,20 @@ def flush_input():
             msvcrt.getch()
 
 def startGame(gameField, snake):
+    generateBioms(gameField)
+    
+    freePlaces = []
+    for i in range(gameFieldSize):
+        for j in range(gameFieldSize):
+            gameField[i, j].changePatterns()
+            if not gameField[i, j].isSnakeHead and not gameField[i, j].isSnakeBody and not gameField[i, j].isApple:
+                freePlaces.append((i, j))
+
+    random.shuffle(freePlaces)
+
+    for i in range(random.randint(gameFieldSize//4, gameFieldSize//2)):
+        gameField[freePlaces[i]].isStone = True    
+
     gameField[gameFieldSize//2, gameFieldSize//2 + 2].isApple = True
     gameField[gameFieldSize//2, gameFieldSize//2 - 2].isSnakeHead = True
     gameField[gameFieldSize//2, gameFieldSize//2 - 3].isSnakeBody = True
@@ -473,17 +515,8 @@ def startGame(gameField, snake):
     snake.coordinateHistory.append((gameFieldSize//2, gameFieldSize//2 - 2))
     snake.coordinateHistory.append((gameFieldSize//2, gameFieldSize//2 - 3))
     snake.coordinateHistory.append((gameFieldSize//2, gameFieldSize//2 - 4))
-    freePlaces = []
-    for i in range(gameFieldSize):
-        for j in range(gameFieldSize):
-            gameField[i, j].changeGrassPattern()
-            if not gameField[i, j].isSnakeHead and not gameField[i, j].isSnakeBody and not gameField[i, j].isApple:
-                freePlaces.append((i, j))
+    
 
-    random.shuffle(freePlaces)
-
-    for i in range(random.randint(gameFieldSize//4, gameFieldSize//2)):
-        gameField[freePlaces[i]].isStone = True    
 
 def placeApple(gameField):
     global gameFieldSize
@@ -497,6 +530,45 @@ def placeApple(gameField):
 
     if freePlaces:
         gameField[freePlaces[0]].isApple = True
+
+def generateBioms(gameField):  
+    for _ in range(gameFieldSize // random.randint(gameFieldSize//10, gameFieldSize)):  
+        current_y = random.randint(0, gameFieldSize - 1)
+        current_x = random.randint(0, gameFieldSize - 1)
+        
+        area_size = (gameFieldSize * gameFieldSize) // (random.randint(4, 15)) 
+        biom = random.randint(0,1)
+        if biom == 0:
+            for _ in range(area_size):
+                gameField[current_y, current_x].isGravel = True
+                current_y = max(0, min(gameFieldSize - 1, current_y + random.choice([-1, 0, 1])))
+                current_x = max(0, min(gameFieldSize - 1, current_x + random.choice([-1, 0, 1])))
+        elif biom == 1:
+            for _ in range(area_size):
+                gameField[current_y, current_x].isSand = True
+                current_y = max(0, min(gameFieldSize - 1, current_y + random.choice([-1, 0, 1])))
+                current_x = max(0, min(gameFieldSize - 1, current_x + random.choice([-1, 0, 1])))
+    
+    for y in range(gameFieldSize):
+        for x in range(gameFieldSize):
+            neighborsCells = [(y - 1,x), (y - 1,x + 1), (y ,x + 1), (y + 1,x + 1), (y + 1,x), (y + 1,x - 1), (y ,x - 1), (y - 1,x - 1)]
+            
+            if not gameField[y,x].isSand and not gameField[y,x].isGravel:
+                sandCounter  = 0
+                gravelCounter = 0
+                for i in neighborsCells:
+                    neigbor_y, neigbor_x = max(0 ,min(gameFieldSize - 1 ,i[0])), max(0 ,min(gameFieldSize - 1 ,i[1]))
+                    if gameField[ neigbor_y, neigbor_x].isSand:
+                        sandCounter += 1
+                    elif gameField[ neigbor_y, neigbor_x].isGravel:
+                        gravelCounter += 1
+
+                if sandCounter >= 4:
+                    gameField[y, x].isSand = True
+                elif gravelCounter >= 4:
+                    gameField[y,x].isGravel = True
+
+    
 
 def main():
     global gameField, moveDirection

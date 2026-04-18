@@ -5,7 +5,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setup(
     name="FunHub-app-launcher",
-    version="1.0.5",
+    version="1.0.6",
     py_modules=["menu"],
     description="CLI launcher for CLI apps",
     long_description=open("README.md", encoding="utf-8").read(),

@@ -39,6 +39,8 @@ prew_term_rows = 0
 
 GITHUB_JSON_URL = f"https://raw.githubusercontent.com/NaCl1984/FunHub-tech-page/refs/heads/main/plugins.json?t={int(time.time())}"
 
+LAUNCHER_PACKAGER_NAME = 'funhub-app-launcher'
+
 app_dir = Path.home() / ".funhub"
 app_dir.mkdir(exist_ok=True)
 
@@ -497,6 +499,19 @@ def flush_input():
         while msvcrt.kbhit():
             msvcrt.getch()
 
+def checkUpdates():
+    try:
+        installedVersion = version(LAUNCHER_PACKAGER_NAME)
+    except:
+        installedVersion = None
+    url = f"https://pypi.org/pypi/{LAUNCHER_PACKAGER_NAME}/json"
+    response = requests.get(url, timeout=5)
+    response.raise_for_status()
+    latestVersion = response.json()["info"]["version"]
+
+    if parse(latestVersion) > parse(installedVersion):
+        systemMessage(f'Funhub not updated to latest vesrion. Update to latest version?',[buttonObject('Exit', lambda: app_exit(None)), buttonObject('Update', lambda: updatePackage(LAUNCHER_PACKAGER_NAME)), buttonObject('Launch with out update', lambda: None)])
+
 def main():
     global selectedItem
 
@@ -507,6 +522,7 @@ def main():
         checkTerminalSize()
         sys.stdout.write('\033[2J\033[H')
         sys.stdout.flush()
+        checkUpdates()
         printMenu(menu)
         with keyboard.Events() as events:
             while True:
@@ -556,7 +572,6 @@ def main():
         if sys.platform != 'win32':
             termios.tcsetattr(fd, termios.TCSADRAIN, oldSettings)
         flush_input()
-
 
 if __name__ == "__main__":
     main()
