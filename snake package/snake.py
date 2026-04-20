@@ -569,7 +569,6 @@ def generateBioms(gameField):
                     gameField[y,x].isGravel = True
 
     
-
 def main():
     global gameField, moveDirection
     moves = 0
