@@ -1,0 +1,3 @@
+[submodule "fractals pakcage/cpp-terminal"]
+	path = fractals pakcage/cpp-terminal
+	url = https://github.com/jupyter-xeus/cpp-terminal
