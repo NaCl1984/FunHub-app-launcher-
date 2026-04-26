@@ -1,3 +1,6 @@
 [submodule "fractals pakcage/cpp-terminal"]
 	path = fractals pakcage/cpp-terminal
 	url = https://github.com/jupyter-xeus/cpp-terminal
+[submodule "fractals pakcage/cpp/scripts/CLI/cpp-terminal"]
+	path = fractals pakcage/cpp/scripts/CLI/cpp-terminal
+	url = https://github.com/jupyter-xeus/cpp-terminal

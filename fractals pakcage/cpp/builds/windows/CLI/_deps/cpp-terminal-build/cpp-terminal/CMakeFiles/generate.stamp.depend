@@ -1,0 +1,7 @@
+# CMake generation dependency list for this directory.
+C:/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/share/cmake-4.1/Modules/BasicConfigVersion-AnyNewerVersion.cmake.in
+C:/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/share/cmake-4.1/Modules/CMakePackageConfigHelpers.cmake
+C:/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/share/cmake-4.1/Modules/GNUInstallDirs.cmake
+C:/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/share/cmake-4.1/Modules/WriteBasicConfigVersionFile.cmake
+D:/code/funHub/fractals pakcage/cpp/builds/windows/CLI/_deps/cpp-terminal-src/cmake/cpp-terminalConfig.cmake.in
+D:/code/funHub/fractals pakcage/cpp/builds/windows/CLI/_deps/cpp-terminal-src/cpp-terminal/CMakeLists.txt

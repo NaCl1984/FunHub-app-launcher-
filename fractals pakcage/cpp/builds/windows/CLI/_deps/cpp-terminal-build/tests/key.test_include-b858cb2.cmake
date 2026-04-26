@@ -1,0 +1,5 @@
+if(EXISTS "D:/code/funHub/fractals pakcage/cpp/builds/windows/CLI/_deps/cpp-terminal-build/tests/key.test_tests-b858cb2.cmake")
+  include("D:/code/funHub/fractals pakcage/cpp/builds/windows/CLI/_deps/cpp-terminal-build/tests/key.test_tests-b858cb2.cmake")
+else()
+  add_test(key.test_NOT_BUILT-b858cb2 key.test_NOT_BUILT-b858cb2)
+endif()

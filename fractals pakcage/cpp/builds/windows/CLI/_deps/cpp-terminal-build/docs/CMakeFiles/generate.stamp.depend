@@ -1,0 +1,8 @@
+# CMake generation dependency list for this directory.
+C:/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/share/cmake-4.1/Modules/FindDoxygen.cmake
+C:/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/share/cmake-4.1/Modules/FindPackageHandleStandardArgs.cmake
+C:/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/share/cmake-4.1/Modules/FindPackageMessage.cmake
+C:/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/share/cmake-4.1/Modules/GNUInstallDirs.cmake
+D:/code/funHub/fractals pakcage/cpp/builds/windows/CLI/_deps/cpp-terminal-src/cmake/Documentation.cmake
+D:/code/funHub/fractals pakcage/cpp/builds/windows/CLI/_deps/cpp-terminal-src/docs/CMakeLists.txt
+D:/code/funHub/fractals pakcage/cpp/builds/windows/CLI/_deps/cpp-terminal-src/docs/imgs/logo.png

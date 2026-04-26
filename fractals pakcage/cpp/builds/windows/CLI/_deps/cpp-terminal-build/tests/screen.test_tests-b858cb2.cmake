@@ -1,0 +1,5 @@
+add_test( [==[Test Term::Screen]==] [==[D:/code/funHub/fractals pakcage/cpp/builds/windows/CLI/_deps/cpp-terminal-build/tests/Debug/screen.test.exe]==] [==[--test-case=Test Term::Screen]==])
+set_tests_properties( [==[Test Term::Screen]==] PROPERTIES WORKING_DIRECTORY [==[D:/code/funHub/fractals pakcage/cpp/builds/windows/CLI/_deps/cpp-terminal-build/tests]==] LABELS)
+add_test( [==[Test Term::Screen(5,10)]==] [==[D:/code/funHub/fractals pakcage/cpp/builds/windows/CLI/_deps/cpp-terminal-build/tests/Debug/screen.test.exe]==] [==[--test-case=Test Term::Screen(5\,10)]==])
+set_tests_properties( [==[Test Term::Screen(5,10)]==] PROPERTIES WORKING_DIRECTORY [==[D:/code/funHub/fractals pakcage/cpp/builds/windows/CLI/_deps/cpp-terminal-build/tests]==] LABELS)
+set( screen.test_TESTS [==[Test Term::Screen]==] [==[Test Term::Screen(5,10)]==])

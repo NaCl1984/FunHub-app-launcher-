@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="18.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="D:\code\funHub\fractals pakcage\cpp\builds\windows\CLI\_deps\cpp-terminal-src\tests\key.test.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="D:\code\funHub\fractals pakcage\cpp\builds\windows\CLI\_deps\cpp-terminal-src\tests\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{D6B25E4D-62FF-35BB-BB02-7046AB5C23EF}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

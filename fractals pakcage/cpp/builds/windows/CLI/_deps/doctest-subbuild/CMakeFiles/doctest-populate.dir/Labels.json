@@ -1,0 +1,46 @@
+{
+	"sources" : 
+	[
+		{
+			"file" : "D:/Code/funHub/fractals pakcage/cpp/builds/windows/CLI/_deps/doctest-subbuild/CMakeFiles/doctest-populate"
+		},
+		{
+			"file" : "D:/Code/funHub/fractals pakcage/cpp/builds/windows/CLI/_deps/doctest-subbuild/CMakeFiles/932e7505688451ec6595658fb313080d/doctest-populate.rule"
+		},
+		{
+			"file" : "D:/Code/funHub/fractals pakcage/cpp/builds/windows/CLI/_deps/doctest-subbuild/CMakeFiles/ccba7657a6a96e31c67e58470da1e978/doctest-populate-complete.rule"
+		},
+		{
+			"file" : "D:/Code/funHub/fractals pakcage/cpp/builds/windows/CLI/_deps/doctest-subbuild/CMakeFiles/ea09424ce26968a9e6fb72cb4a5aa7ce/doctest-populate-build.rule"
+		},
+		{
+			"file" : "D:/Code/funHub/fractals pakcage/cpp/builds/windows/CLI/_deps/doctest-subbuild/CMakeFiles/ea09424ce26968a9e6fb72cb4a5aa7ce/doctest-populate-configure.rule"
+		},
+		{
+			"file" : "D:/Code/funHub/fractals pakcage/cpp/builds/windows/CLI/_deps/doctest-subbuild/CMakeFiles/ea09424ce26968a9e6fb72cb4a5aa7ce/doctest-populate-download.rule"
+		},
+		{
+			"file" : "D:/Code/funHub/fractals pakcage/cpp/builds/windows/CLI/_deps/doctest-subbuild/CMakeFiles/ea09424ce26968a9e6fb72cb4a5aa7ce/doctest-populate-install.rule"
+		},
+		{
+			"file" : "D:/Code/funHub/fractals pakcage/cpp/builds/windows/CLI/_deps/doctest-subbuild/CMakeFiles/ea09424ce26968a9e6fb72cb4a5aa7ce/doctest-populate-mkdir.rule"
+		},
+		{
+			"file" : "D:/Code/funHub/fractals pakcage/cpp/builds/windows/CLI/_deps/doctest-subbuild/CMakeFiles/ea09424ce26968a9e6fb72cb4a5aa7ce/doctest-populate-patch.rule"
+		},
+		{
+			"file" : "D:/Code/funHub/fractals pakcage/cpp/builds/windows/CLI/_deps/doctest-subbuild/CMakeFiles/ea09424ce26968a9e6fb72cb4a5aa7ce/doctest-populate-test.rule"
+		},
+		{
+			"file" : "D:/Code/funHub/fractals pakcage/cpp/builds/windows/CLI/_deps/doctest-subbuild/CMakeFiles/ea09424ce26968a9e6fb72cb4a5aa7ce/doctest-populate-update.rule"
+		}
+	],
+	"target" : 
+	{
+		"labels" : 
+		[
+			"doctest-populate"
+		],
+		"name" : "doctest-populate"
+	}
+}

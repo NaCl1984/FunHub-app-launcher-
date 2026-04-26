@@ -1,0 +1,10 @@
+^D:\CODE\FUNHUB\FRACTALS PAKCAGE\CPP\BUILDS\WINDOWS\CLI\_DEPS\CPP-TERMINAL-SUBBUILD\CMAKEFILES\0A239F5259D669FC92A6721C41FD9DE9\GENERATE.STAMP.RULE
+setlocal
+"C:\Program Files\Microsoft Visual Studio\18\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" "-SD:/Code/funHub/fractals pakcage/cpp/builds/windows/CLI/_deps/cpp-terminal-subbuild" "-BD:/Code/funHub/fractals pakcage/cpp/builds/windows/CLI/_deps/cpp-terminal-subbuild" --check-stamp-list CMakeFiles/generate.stamp.list --vs-solution-file "D:/Code/funHub/fractals pakcage/cpp/builds/windows/CLI/_deps/cpp-terminal-subbuild/cpp-terminal-populate.sln"
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd

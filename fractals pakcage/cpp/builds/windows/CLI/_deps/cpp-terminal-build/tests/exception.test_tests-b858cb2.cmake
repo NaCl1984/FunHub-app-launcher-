@@ -1,0 +1,7 @@
+add_test( WindowsError [==[D:/code/funHub/fractals pakcage/cpp/builds/windows/CLI/_deps/cpp-terminal-build/tests/Debug/exception.test.exe]==] [==[--test-case=WindowsError]==])
+set_tests_properties( WindowsError PROPERTIES WORKING_DIRECTORY [==[D:/code/funHub/fractals pakcage/cpp/builds/windows/CLI/_deps/cpp-terminal-build/tests]==] LABELS)
+add_test( Exception [==[D:/code/funHub/fractals pakcage/cpp/builds/windows/CLI/_deps/cpp-terminal-build/tests/Debug/exception.test.exe]==] [==[--test-case=Exception]==])
+set_tests_properties( Exception PROPERTIES WORKING_DIRECTORY [==[D:/code/funHub/fractals pakcage/cpp/builds/windows/CLI/_deps/cpp-terminal-build/tests]==] LABELS)
+add_test( ErrnoException [==[D:/code/funHub/fractals pakcage/cpp/builds/windows/CLI/_deps/cpp-terminal-build/tests/Debug/exception.test.exe]==] [==[--test-case=ErrnoException]==])
+set_tests_properties( ErrnoException PROPERTIES WORKING_DIRECTORY [==[D:/code/funHub/fractals pakcage/cpp/builds/windows/CLI/_deps/cpp-terminal-build/tests]==] LABELS)
+set( exception.test_TESTS WindowsError Exception ErrnoException)

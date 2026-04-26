@@ -1,0 +1,46 @@
+{
+	"sources" : 
+	[
+		{
+			"file" : "D:/Code/funHub/fractals pakcage/cpp/builds/windows/CLI/_deps/cpp-terminal-subbuild/CMakeFiles/cpp-terminal-populate"
+		},
+		{
+			"file" : "D:/Code/funHub/fractals pakcage/cpp/builds/windows/CLI/_deps/cpp-terminal-subbuild/CMakeFiles/0a239f5259d669fc92a6721c41fd9de9/cpp-terminal-populate.rule"
+		},
+		{
+			"file" : "D:/Code/funHub/fractals pakcage/cpp/builds/windows/CLI/_deps/cpp-terminal-subbuild/CMakeFiles/977e43a466c848e25a20d8d832c0d170/cpp-terminal-populate-complete.rule"
+		},
+		{
+			"file" : "D:/Code/funHub/fractals pakcage/cpp/builds/windows/CLI/_deps/cpp-terminal-subbuild/CMakeFiles/d30c09e7b5556fa6771ee7cadf4db3f0/cpp-terminal-populate-build.rule"
+		},
+		{
+			"file" : "D:/Code/funHub/fractals pakcage/cpp/builds/windows/CLI/_deps/cpp-terminal-subbuild/CMakeFiles/d30c09e7b5556fa6771ee7cadf4db3f0/cpp-terminal-populate-configure.rule"
+		},
+		{
+			"file" : "D:/Code/funHub/fractals pakcage/cpp/builds/windows/CLI/_deps/cpp-terminal-subbuild/CMakeFiles/d30c09e7b5556fa6771ee7cadf4db3f0/cpp-terminal-populate-download.rule"
+		},
+		{
+			"file" : "D:/Code/funHub/fractals pakcage/cpp/builds/windows/CLI/_deps/cpp-terminal-subbuild/CMakeFiles/d30c09e7b5556fa6771ee7cadf4db3f0/cpp-terminal-populate-install.rule"
+		},
+		{
+			"file" : "D:/Code/funHub/fractals pakcage/cpp/builds/windows/CLI/_deps/cpp-terminal-subbuild/CMakeFiles/d30c09e7b5556fa6771ee7cadf4db3f0/cpp-terminal-populate-mkdir.rule"
+		},
+		{
+			"file" : "D:/Code/funHub/fractals pakcage/cpp/builds/windows/CLI/_deps/cpp-terminal-subbuild/CMakeFiles/d30c09e7b5556fa6771ee7cadf4db3f0/cpp-terminal-populate-patch.rule"
+		},
+		{
+			"file" : "D:/Code/funHub/fractals pakcage/cpp/builds/windows/CLI/_deps/cpp-terminal-subbuild/CMakeFiles/d30c09e7b5556fa6771ee7cadf4db3f0/cpp-terminal-populate-test.rule"
+		},
+		{
+			"file" : "D:/Code/funHub/fractals pakcage/cpp/builds/windows/CLI/_deps/cpp-terminal-subbuild/CMakeFiles/d30c09e7b5556fa6771ee7cadf4db3f0/cpp-terminal-populate-update.rule"
+		}
+	],
+	"target" : 
+	{
+		"labels" : 
+		[
+			"cpp-terminal-populate"
+		],
+		"name" : "cpp-terminal-populate"
+	}
+}

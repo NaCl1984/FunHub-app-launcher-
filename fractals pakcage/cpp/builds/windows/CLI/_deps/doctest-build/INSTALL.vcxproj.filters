@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="18.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <CustomBuild Include="D:\code\funHub\fractals pakcage\cpp\builds\windows\CLI\CMakeFiles\5ac3311bb51f977471db1d0dfc0e10a4\INSTALL_force.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="CMake Rules">
+      <UniqueIdentifier>{9B8561BF-957A-37DE-AA6E-9259FCD73BA9}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

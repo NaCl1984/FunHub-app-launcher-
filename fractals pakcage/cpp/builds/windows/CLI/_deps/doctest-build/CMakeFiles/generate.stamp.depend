@@ -1,0 +1,7 @@
+# CMake generation dependency list for this directory.
+C:/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/share/cmake-4.1/Modules/BasicConfigVersion-SameMajorVersion.cmake.in
+C:/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/share/cmake-4.1/Modules/CMakePackageConfigHelpers.cmake
+C:/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/share/cmake-4.1/Modules/WriteBasicConfigVersionFile.cmake
+D:/code/funHub/fractals pakcage/cpp/builds/windows/CLI/_deps/doctest-src/CMakeLists.txt
+D:/code/funHub/fractals pakcage/cpp/builds/windows/CLI/_deps/doctest-src/doctest.pc.in
+D:/code/funHub/fractals pakcage/cpp/builds/windows/CLI/_deps/doctest-src/scripts/cmake/Config.cmake.in

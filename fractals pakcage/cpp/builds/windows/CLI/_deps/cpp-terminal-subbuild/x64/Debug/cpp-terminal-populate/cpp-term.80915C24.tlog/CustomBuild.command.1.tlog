@@ -1,0 +1,150 @@
+^D:\CODE\FUNHUB\FRACTALS PAKCAGE\CPP\BUILDS\WINDOWS\CLI\_DEPS\CPP-TERMINAL-SUBBUILD\CMAKEFILES\D30C09E7B5556FA6771EE7CADF4DB3F0\CPP-TERMINAL-POPULATE-MKDIR.RULE
+setlocal
+"C:\Program Files\Microsoft Visual Studio\18\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -Dcfgdir=/Debug -P "D:/Code/funHub/fractals pakcage/cpp/builds/windows/CLI/_deps/cpp-terminal-subbuild/cpp-terminal-populate-prefix/tmp/cpp-terminal-populate-mkdirs.cmake"
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\Microsoft Visual Studio\18\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -E touch "D:/Code/funHub/fractals pakcage/cpp/builds/windows/CLI/_deps/cpp-terminal-subbuild/cpp-terminal-populate-prefix/src/cpp-terminal-populate-stamp/Debug/cpp-terminal-populate-mkdir"
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+^D:\CODE\FUNHUB\FRACTALS PAKCAGE\CPP\BUILDS\WINDOWS\CLI\_DEPS\CPP-TERMINAL-SUBBUILD\CMAKEFILES\D30C09E7B5556FA6771EE7CADF4DB3F0\CPP-TERMINAL-POPULATE-DOWNLOAD.RULE
+setlocal
+cd "D:\code\funHub\fractals pakcage\cpp\builds\windows\CLI\_deps"
+if %errorlevel% neq 0 goto :cmEnd
+D:
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\Microsoft Visual Studio\18\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -DCMAKE_MESSAGE_LOG_LEVEL=VERBOSE -P "D:/Code/funHub/fractals pakcage/cpp/builds/windows/CLI/_deps/cpp-terminal-subbuild/cpp-terminal-populate-prefix/tmp/cpp-terminal-populate-gitclone.cmake"
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\Microsoft Visual Studio\18\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -E touch "D:/Code/funHub/fractals pakcage/cpp/builds/windows/CLI/_deps/cpp-terminal-subbuild/cpp-terminal-populate-prefix/src/cpp-terminal-populate-stamp/Debug/cpp-terminal-populate-download"
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+^D:\CODE\FUNHUB\FRACTALS PAKCAGE\CPP\BUILDS\WINDOWS\CLI\_DEPS\CPP-TERMINAL-SUBBUILD\CMAKEFILES\D30C09E7B5556FA6771EE7CADF4DB3F0\CPP-TERMINAL-POPULATE-UPDATE.RULE
+setlocal
+cd "D:\code\funHub\fractals pakcage\cpp\builds\windows\CLI\_deps\cpp-terminal-src"
+if %errorlevel% neq 0 goto :cmEnd
+D:
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\Microsoft Visual Studio\18\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -Dcan_fetch=YES -DCMAKE_MESSAGE_LOG_LEVEL=VERBOSE -P "D:/Code/funHub/fractals pakcage/cpp/builds/windows/CLI/_deps/cpp-terminal-subbuild/cpp-terminal-populate-prefix/tmp/cpp-terminal-populate-gitupdate.cmake"
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+^D:\CODE\FUNHUB\FRACTALS PAKCAGE\CPP\BUILDS\WINDOWS\CLI\_DEPS\CPP-TERMINAL-SUBBUILD\CMAKEFILES\D30C09E7B5556FA6771EE7CADF4DB3F0\CPP-TERMINAL-POPULATE-PATCH.RULE
+setlocal
+"C:\Program Files\Microsoft Visual Studio\18\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -E echo_append
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\Microsoft Visual Studio\18\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -E touch "D:/Code/funHub/fractals pakcage/cpp/builds/windows/CLI/_deps/cpp-terminal-subbuild/cpp-terminal-populate-prefix/src/cpp-terminal-populate-stamp/Debug/cpp-terminal-populate-patch"
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+^D:\CODE\FUNHUB\FRACTALS PAKCAGE\CPP\BUILDS\WINDOWS\CLI\_DEPS\CPP-TERMINAL-SUBBUILD\CMAKEFILES\D30C09E7B5556FA6771EE7CADF4DB3F0\CPP-TERMINAL-POPULATE-CONFIGURE.RULE
+setlocal
+cd "D:\code\funHub\fractals pakcage\cpp\builds\windows\CLI\_deps\cpp-terminal-build"
+if %errorlevel% neq 0 goto :cmEnd
+D:
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\Microsoft Visual Studio\18\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -E echo_append
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\Microsoft Visual Studio\18\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -E touch "D:/Code/funHub/fractals pakcage/cpp/builds/windows/CLI/_deps/cpp-terminal-subbuild/cpp-terminal-populate-prefix/src/cpp-terminal-populate-stamp/Debug/cpp-terminal-populate-configure"
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+^D:\CODE\FUNHUB\FRACTALS PAKCAGE\CPP\BUILDS\WINDOWS\CLI\_DEPS\CPP-TERMINAL-SUBBUILD\CMAKEFILES\D30C09E7B5556FA6771EE7CADF4DB3F0\CPP-TERMINAL-POPULATE-BUILD.RULE
+setlocal
+cd "D:\code\funHub\fractals pakcage\cpp\builds\windows\CLI\_deps\cpp-terminal-build"
+if %errorlevel% neq 0 goto :cmEnd
+D:
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\Microsoft Visual Studio\18\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -E echo_append
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\Microsoft Visual Studio\18\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -E touch "D:/Code/funHub/fractals pakcage/cpp/builds/windows/CLI/_deps/cpp-terminal-subbuild/cpp-terminal-populate-prefix/src/cpp-terminal-populate-stamp/Debug/cpp-terminal-populate-build"
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+^D:\CODE\FUNHUB\FRACTALS PAKCAGE\CPP\BUILDS\WINDOWS\CLI\_DEPS\CPP-TERMINAL-SUBBUILD\CMAKEFILES\D30C09E7B5556FA6771EE7CADF4DB3F0\CPP-TERMINAL-POPULATE-INSTALL.RULE
+setlocal
+cd "D:\code\funHub\fractals pakcage\cpp\builds\windows\CLI\_deps\cpp-terminal-build"
+if %errorlevel% neq 0 goto :cmEnd
+D:
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\Microsoft Visual Studio\18\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -E echo_append
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\Microsoft Visual Studio\18\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -E touch "D:/Code/funHub/fractals pakcage/cpp/builds/windows/CLI/_deps/cpp-terminal-subbuild/cpp-terminal-populate-prefix/src/cpp-terminal-populate-stamp/Debug/cpp-terminal-populate-install"
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+^D:\CODE\FUNHUB\FRACTALS PAKCAGE\CPP\BUILDS\WINDOWS\CLI\_DEPS\CPP-TERMINAL-SUBBUILD\CMAKEFILES\D30C09E7B5556FA6771EE7CADF4DB3F0\CPP-TERMINAL-POPULATE-TEST.RULE
+setlocal
+cd "D:\code\funHub\fractals pakcage\cpp\builds\windows\CLI\_deps\cpp-terminal-build"
+if %errorlevel% neq 0 goto :cmEnd
+D:
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\Microsoft Visual Studio\18\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -E echo_append
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\Microsoft Visual Studio\18\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -E touch "D:/Code/funHub/fractals pakcage/cpp/builds/windows/CLI/_deps/cpp-terminal-subbuild/cpp-terminal-populate-prefix/src/cpp-terminal-populate-stamp/Debug/cpp-terminal-populate-test"
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+^D:\CODE\FUNHUB\FRACTALS PAKCAGE\CPP\BUILDS\WINDOWS\CLI\_DEPS\CPP-TERMINAL-SUBBUILD\CMAKEFILES\20535F9AD19347BAE0E6AB60B85DAE57\CPP-TERMINAL-POPULATE-COMPLETE.RULE
+setlocal
+"C:\Program Files\Microsoft Visual Studio\18\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -E make_directory "D:/code/funHub/fractals pakcage/cpp/builds/windows/CLI/_deps/cpp-terminal-subbuild/CMakeFiles/Debug"
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\Microsoft Visual Studio\18\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -E touch "D:/code/funHub/fractals pakcage/cpp/builds/windows/CLI/_deps/cpp-terminal-subbuild/CMakeFiles/Debug/cpp-terminal-populate-complete"
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\Microsoft Visual Studio\18\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -E touch "D:/Code/funHub/fractals pakcage/cpp/builds/windows/CLI/_deps/cpp-terminal-subbuild/cpp-terminal-populate-prefix/src/cpp-terminal-populate-stamp/Debug/cpp-terminal-populate-done"
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+^D:\CODE\FUNHUB\FRACTALS PAKCAGE\CPP\BUILDS\WINDOWS\CLI\_DEPS\CPP-TERMINAL-SUBBUILD\CMAKEFILES\DD77EE9A789F44886A246B4D49F0D180\CPP-TERMINAL-POPULATE.RULE
+setlocal
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+^D:\CODE\FUNHUB\FRACTALS PAKCAGE\CPP\BUILDS\WINDOWS\CLI\_DEPS\CPP-TERMINAL-SUBBUILD\CMAKELISTS.TXT
+setlocal
+"C:\Program Files\Microsoft Visual Studio\18\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" "-SD:/Code/funHub/fractals pakcage/cpp/builds/windows/CLI/_deps/cpp-terminal-subbuild" "-BD:/code/funHub/fractals pakcage/cpp/builds/windows/CLI/_deps/cpp-terminal-subbuild" --check-stamp-file "D:/code/funHub/fractals pakcage/cpp/builds/windows/CLI/_deps/cpp-terminal-subbuild/CMakeFiles/generate.stamp"
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd

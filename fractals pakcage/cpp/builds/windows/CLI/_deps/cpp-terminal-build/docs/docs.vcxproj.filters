@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="18.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <CustomBuild Include="D:\code\funHub\fractals pakcage\cpp\builds\windows\CLI\CMakeFiles\5282c40c77142fbecd4e9c1a1dd76da2\docs.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="D:\code\funHub\fractals pakcage\cpp\builds\windows\CLI\_deps\cpp-terminal-src\docs\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="D:\code\funHub\fractals pakcage\cpp\builds\windows\CLI\_deps\cpp-terminal-build\docs\CMakeFiles\docs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="CMake Rules">
+      <UniqueIdentifier>{9B8561BF-957A-37DE-AA6E-9259FCD73BA9}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

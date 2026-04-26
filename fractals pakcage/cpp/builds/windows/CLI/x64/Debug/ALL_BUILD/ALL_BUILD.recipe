@@ -1,0 +1,107 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project>
+  <ProjectOutputs>
+    <ProjectOutput>
+      <FullPath>D:\code\funHub\fractals pakcage\cpp\builds\windows\CLI\x64\Debug\ZERO_CHECK</FullPath>
+    </ProjectOutput>
+    <ProjectOutput>
+      <FullPath>D:\code\funHub\fractals pakcage\cpp\builds\windows\CLI\_deps\cpp-terminal-build\tests\Debug\Args.exe</FullPath>
+    </ProjectOutput>
+    <ProjectOutput>
+      <FullPath>D:\code\funHub\fractals pakcage\cpp\builds\windows\CLI\Debug\FractalApp.exe</FullPath>
+    </ProjectOutput>
+    <ProjectOutput>
+      <FullPath>D:\code\funHub\fractals pakcage\cpp\builds\windows\CLI\_deps\cpp-terminal-build\examples\Debug\args.exe</FullPath>
+    </ProjectOutput>
+    <ProjectOutput>
+      <FullPath>D:\code\funHub\fractals pakcage\cpp\builds\windows\CLI\_deps\cpp-terminal-build\examples\Debug\attach_console.exe</FullPath>
+    </ProjectOutput>
+    <ProjectOutput>
+      <FullPath>D:\code\funHub\fractals pakcage\cpp\builds\windows\CLI\_deps\cpp-terminal-build\examples\Debug\attach_console_minimal.exe</FullPath>
+    </ProjectOutput>
+    <ProjectOutput>
+      <FullPath>D:\code\funHub\fractals pakcage\cpp\builds\windows\CLI\_deps\cpp-terminal-build\examples\Debug\cin_cooked.exe</FullPath>
+    </ProjectOutput>
+    <ProjectOutput>
+      <FullPath>D:\code\funHub\fractals pakcage\cpp\builds\windows\CLI\_deps\cpp-terminal-build\examples\Debug\cin_raw.exe</FullPath>
+    </ProjectOutput>
+    <ProjectOutput>
+      <FullPath>D:\code\funHub\fractals pakcage\cpp\builds\windows\CLI\_deps\cpp-terminal-build\examples\Debug\colors.exe</FullPath>
+    </ProjectOutput>
+    <ProjectOutput>
+      <FullPath>D:\code\funHub\fractals pakcage\cpp\builds\windows\CLI\_deps\cpp-terminal-build\examples\Debug\cout.exe</FullPath>
+    </ProjectOutput>
+    <ProjectOutput>
+      <FullPath>D:\code\funHub\fractals pakcage\cpp\builds\windows\CLI\_deps\cpp-terminal-build\examples\Debug\cursor.exe</FullPath>
+    </ProjectOutput>
+    <ProjectOutput>
+      <FullPath>D:\code\funHub\fractals pakcage\cpp\builds\windows\CLI\_deps\cpp-terminal-build\examples\Debug\events.exe</FullPath>
+    </ProjectOutput>
+    <ProjectOutput>
+      <FullPath>D:\code\funHub\fractals pakcage\cpp\builds\windows\CLI\_deps\cpp-terminal-build\tests\Debug\events.test.exe</FullPath>
+    </ProjectOutput>
+    <ProjectOutput>
+      <FullPath>D:\code\funHub\fractals pakcage\cpp\builds\windows\CLI\_deps\cpp-terminal-build\tests\Debug\exception.test.exe</FullPath>
+    </ProjectOutput>
+    <ProjectOutput>
+      <FullPath>D:\code\funHub\fractals pakcage\cpp\builds\windows\CLI\_deps\cpp-terminal-build\tests\Debug\file.test.exe</FullPath>
+    </ProjectOutput>
+    <ProjectOutput>
+      <FullPath>D:\code\funHub\fractals pakcage\cpp\builds\windows\CLI\_deps\cpp-terminal-build\tests\Debug\key.test.exe</FullPath>
+    </ProjectOutput>
+    <ProjectOutput>
+      <FullPath>D:\code\funHub\fractals pakcage\cpp\builds\windows\CLI\_deps\cpp-terminal-build\examples\Debug\keys.exe</FullPath>
+    </ProjectOutput>
+    <ProjectOutput>
+      <FullPath>D:\code\funHub\fractals pakcage\cpp\builds\windows\CLI\_deps\cpp-terminal-build\examples\Debug\kilo.exe</FullPath>
+    </ProjectOutput>
+    <ProjectOutput>
+      <FullPath>D:\code\funHub\fractals pakcage\cpp\builds\windows\CLI\_deps\cpp-terminal-build\examples\Debug\menu.exe</FullPath>
+    </ProjectOutput>
+    <ProjectOutput>
+      <FullPath>D:\code\funHub\fractals pakcage\cpp\builds\windows\CLI\_deps\cpp-terminal-build\examples\Debug\menu_window.exe</FullPath>
+    </ProjectOutput>
+    <ProjectOutput>
+      <FullPath>D:\code\funHub\fractals pakcage\cpp\builds\windows\CLI\_deps\cpp-terminal-build\examples\Debug\minimal.exe</FullPath>
+    </ProjectOutput>
+    <ProjectOutput>
+      <FullPath>D:\code\funHub\fractals pakcage\cpp\builds\windows\CLI\_deps\cpp-terminal-build\tests\Debug\options.test.exe</FullPath>
+    </ProjectOutput>
+    <ProjectOutput>
+      <FullPath>D:\code\funHub\fractals pakcage\cpp\builds\windows\CLI\_deps\cpp-terminal-build\examples\Debug\prompt_immediate.exe</FullPath>
+    </ProjectOutput>
+    <ProjectOutput>
+      <FullPath>D:\code\funHub\fractals pakcage\cpp\builds\windows\CLI\_deps\cpp-terminal-build\examples\Debug\prompt_multiline.exe</FullPath>
+    </ProjectOutput>
+    <ProjectOutput>
+      <FullPath>D:\code\funHub\fractals pakcage\cpp\builds\windows\CLI\_deps\cpp-terminal-build\examples\Debug\prompt_not_immediate.exe</FullPath>
+    </ProjectOutput>
+    <ProjectOutput>
+      <FullPath>D:\code\funHub\fractals pakcage\cpp\builds\windows\CLI\_deps\cpp-terminal-build\examples\Debug\prompt_simple.exe</FullPath>
+    </ProjectOutput>
+    <ProjectOutput>
+      <FullPath>D:\code\funHub\fractals pakcage\cpp\builds\windows\CLI\_deps\cpp-terminal-build\tests\Debug\screen.test.exe</FullPath>
+    </ProjectOutput>
+    <ProjectOutput>
+      <FullPath>D:\code\funHub\fractals pakcage\cpp\builds\windows\CLI\_deps\cpp-terminal-build\examples\Debug\signal.exe</FullPath>
+    </ProjectOutput>
+    <ProjectOutput>
+      <FullPath>D:\code\funHub\fractals pakcage\cpp\builds\windows\CLI\_deps\cpp-terminal-build\examples\Debug\styles.exe</FullPath>
+    </ProjectOutput>
+    <ProjectOutput>
+      <FullPath>D:\code\funHub\fractals pakcage\cpp\builds\windows\CLI\_deps\cpp-terminal-build\tests\Debug\unicode.test.exe</FullPath>
+    </ProjectOutput>
+    <ProjectOutput>
+      <FullPath>D:\code\funHub\fractals pakcage\cpp\builds\windows\CLI\_deps\cpp-terminal-build\examples\Debug\utf8.exe</FullPath>
+    </ProjectOutput>
+    <ProjectOutput>
+      <FullPath>D:\code\funHub\fractals pakcage\cpp\builds\windows\CLI\_deps\cpp-terminal-build\tests\Debug\version.test.exe</FullPath>
+    </ProjectOutput>
+    <ProjectOutput>
+      <FullPath>D:\Code\funHub\fractals pakcage\cpp\builds\windows\CLI\x64\Debug\ALL_BUILD</FullPath>
+    </ProjectOutput>
+  </ProjectOutputs>
+  <ContentFiles />
+  <SatelliteDlls />
+  <NonRecipeFileRefs />
+</Project>

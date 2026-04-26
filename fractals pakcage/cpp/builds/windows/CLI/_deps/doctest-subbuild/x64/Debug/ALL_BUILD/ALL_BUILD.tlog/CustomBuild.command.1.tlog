@@ -1,0 +1,10 @@
+^D:\CODE\FUNHUB\FRACTALS PAKCAGE\CPP\BUILDS\WINDOWS\CLI\_DEPS\DOCTEST-SUBBUILD\CMAKELISTS.TXT
+setlocal
+"C:\Program Files\Microsoft Visual Studio\18\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" "-SD:/Code/funHub/fractals pakcage/cpp/builds/windows/CLI/_deps/doctest-subbuild" "-BD:/Code/funHub/fractals pakcage/cpp/builds/windows/CLI/_deps/doctest-subbuild" --check-stamp-file "D:/Code/funHub/fractals pakcage/cpp/builds/windows/CLI/_deps/doctest-subbuild/CMakeFiles/generate.stamp"
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd

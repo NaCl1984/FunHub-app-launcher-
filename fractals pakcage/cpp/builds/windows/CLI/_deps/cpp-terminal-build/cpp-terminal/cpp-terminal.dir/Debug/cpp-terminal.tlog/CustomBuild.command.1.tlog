@@ -1,0 +1,10 @@
+^D:\CODE\FUNHUB\FRACTALS PAKCAGE\CPP\BUILDS\WINDOWS\CLI\_DEPS\CPP-TERMINAL-SRC\CPP-TERMINAL\CMAKELISTS.TXT
+setlocal
+"C:\Program Files\Microsoft Visual Studio\18\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" "-SD:/Code/funHub/fractals pakcage/cpp/scripts/CLI" "-BD:/code/funHub/fractals pakcage/cpp/builds/windows/CLI" --check-stamp-file "D:/code/funHub/fractals pakcage/cpp/builds/windows/CLI/_deps/cpp-terminal-build/cpp-terminal/CMakeFiles/generate.stamp"
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd

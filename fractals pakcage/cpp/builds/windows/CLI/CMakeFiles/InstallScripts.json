@@ -1,0 +1,14 @@
+{
+	"InstallScripts" : 
+	[
+		"D:/code/funHub/fractals pakcage/cpp/builds/windows/CLI/cmake_install.cmake",
+		"D:/code/funHub/fractals pakcage/cpp/builds/windows/CLI/_deps/cpp-terminal-build/cmake_install.cmake",
+		"D:/code/funHub/fractals pakcage/cpp/builds/windows/CLI/_deps/cpp-terminal-build/tests/cmake_install.cmake",
+		"D:/code/funHub/fractals pakcage/cpp/builds/windows/CLI/_deps/doctest-build/cmake_install.cmake",
+		"D:/code/funHub/fractals pakcage/cpp/builds/windows/CLI/_deps/cpp-terminal-build/cpp-terminal/cmake_install.cmake",
+		"D:/code/funHub/fractals pakcage/cpp/builds/windows/CLI/_deps/cpp-terminal-build/cpp-terminal/private/cmake_install.cmake",
+		"D:/code/funHub/fractals pakcage/cpp/builds/windows/CLI/_deps/cpp-terminal-build/examples/cmake_install.cmake",
+		"D:/code/funHub/fractals pakcage/cpp/builds/windows/CLI/_deps/cpp-terminal-build/docs/cmake_install.cmake"
+	],
+	"Parallel" : false
+}

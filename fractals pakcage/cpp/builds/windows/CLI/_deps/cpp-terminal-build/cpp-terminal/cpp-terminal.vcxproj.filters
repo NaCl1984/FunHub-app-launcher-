@@ -1,0 +1,124 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="18.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="D:\code\funHub\fractals pakcage\cpp\builds\windows\CLI\_deps\cpp-terminal-src\cpp-terminal\terminal_impl.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\code\funHub\fractals pakcage\cpp\builds\windows\CLI\_deps\cpp-terminal-src\cpp-terminal\terminal_initializer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\code\funHub\fractals pakcage\cpp\builds\windows\CLI\_deps\cpp-terminal-src\cpp-terminal\iostream_initializer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\code\funHub\fractals pakcage\cpp\builds\windows\CLI\_deps\cpp-terminal-src\cpp-terminal\mouse.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\code\funHub\fractals pakcage\cpp\builds\windows\CLI\_deps\cpp-terminal-src\cpp-terminal\args.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\code\funHub\fractals pakcage\cpp\builds\windows\CLI\_deps\cpp-terminal-src\cpp-terminal\focus.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\code\funHub\fractals pakcage\cpp\builds\windows\CLI\_deps\cpp-terminal-src\cpp-terminal\buffer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\code\funHub\fractals pakcage\cpp\builds\windows\CLI\_deps\cpp-terminal-src\cpp-terminal\iostream.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\code\funHub\fractals pakcage\cpp\builds\windows\CLI\_deps\cpp-terminal-src\cpp-terminal\stream.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\code\funHub\fractals pakcage\cpp\builds\windows\CLI\_deps\cpp-terminal-src\cpp-terminal\prompt.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\code\funHub\fractals pakcage\cpp\builds\windows\CLI\_deps\cpp-terminal-src\cpp-terminal\window.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\code\funHub\fractals pakcage\cpp\builds\windows\CLI\_deps\cpp-terminal-src\cpp-terminal\terminal.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\code\funHub\fractals pakcage\cpp\builds\windows\CLI\_deps\cpp-terminal-src\cpp-terminal\color.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\code\funHub\fractals pakcage\cpp\builds\windows\CLI\_deps\cpp-terminal-src\cpp-terminal\key.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\code\funHub\fractals pakcage\cpp\builds\windows\CLI\_deps\cpp-terminal-src\cpp-terminal\event.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\code\funHub\fractals pakcage\cpp\builds\windows\CLI\_deps\cpp-terminal-src\cpp-terminal\screen.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\code\funHub\fractals pakcage\cpp\builds\windows\CLI\_deps\cpp-terminal-src\cpp-terminal\options.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\code\funHub\fractals pakcage\cpp\builds\windows\CLI\_deps\cpp-terminal-src\cpp-terminal\cursor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\code\funHub\fractals pakcage\cpp\builds\windows\CLI\_deps\cpp-terminal-src\cpp-terminal\style.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\code\funHub\fractals pakcage\cpp\builds\windows\CLI\_deps\cpp-terminal-build\cpp-terminal\private\version.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\code\funHub\fractals pakcage\cpp\builds\windows\CLI\_deps\cpp-terminal-src\cpp-terminal\private\return_code.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\code\funHub\fractals pakcage\cpp\builds\windows\CLI\_deps\cpp-terminal-src\cpp-terminal\private\file_initializer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\code\funHub\fractals pakcage\cpp\builds\windows\CLI\_deps\cpp-terminal-src\cpp-terminal\private\exception.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\code\funHub\fractals pakcage\cpp\builds\windows\CLI\_deps\cpp-terminal-src\cpp-terminal\private\unicode.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\code\funHub\fractals pakcage\cpp\builds\windows\CLI\_deps\cpp-terminal-src\cpp-terminal\private\conversion.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\code\funHub\fractals pakcage\cpp\builds\windows\CLI\_deps\cpp-terminal-src\cpp-terminal\private\args.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\code\funHub\fractals pakcage\cpp\builds\windows\CLI\_deps\cpp-terminal-src\cpp-terminal\private\terminal_impl.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\code\funHub\fractals pakcage\cpp\builds\windows\CLI\_deps\cpp-terminal-src\cpp-terminal\private\tty.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\code\funHub\fractals pakcage\cpp\builds\windows\CLI\_deps\cpp-terminal-src\cpp-terminal\private\terminfo.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\code\funHub\fractals pakcage\cpp\builds\windows\CLI\_deps\cpp-terminal-src\cpp-terminal\private\input.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\code\funHub\fractals pakcage\cpp\builds\windows\CLI\_deps\cpp-terminal-src\cpp-terminal\private\screen.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\code\funHub\fractals pakcage\cpp\builds\windows\CLI\_deps\cpp-terminal-src\cpp-terminal\private\cursor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\code\funHub\fractals pakcage\cpp\builds\windows\CLI\_deps\cpp-terminal-src\cpp-terminal\private\file.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\code\funHub\fractals pakcage\cpp\builds\windows\CLI\_deps\cpp-terminal-src\cpp-terminal\private\env.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\code\funHub\fractals pakcage\cpp\builds\windows\CLI\_deps\cpp-terminal-src\cpp-terminal\private\blocking_queue.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\code\funHub\fractals pakcage\cpp\builds\windows\CLI\_deps\cpp-terminal-src\cpp-terminal\private\sigwinch.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\code\funHub\fractals pakcage\cpp\builds\windows\CLI\_deps\cpp-terminal-src\cpp-terminal\private\signals.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="D:\code\funHub\fractals pakcage\cpp\builds\windows\CLI\_deps\cpp-terminal-src\cpp-terminal\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{D6B25E4D-62FF-35BB-BB02-7046AB5C23EF}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

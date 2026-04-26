@@ -1,0 +1,7 @@
+add_test( to_narrow [==[D:/code/funHub/fractals pakcage/cpp/builds/windows/CLI/_deps/cpp-terminal-build/tests/Debug/unicode.test.exe]==] [==[--test-case=to_narrow]==])
+set_tests_properties( to_narrow PROPERTIES WORKING_DIRECTORY [==[D:/code/funHub/fractals pakcage/cpp/builds/windows/CLI/_deps/cpp-terminal-build/tests]==] LABELS)
+add_test( to_wide [==[D:/code/funHub/fractals pakcage/cpp/builds/windows/CLI/_deps/cpp-terminal-build/tests/Debug/unicode.test.exe]==] [==[--test-case=to_wide]==])
+set_tests_properties( to_wide PROPERTIES WORKING_DIRECTORY [==[D:/code/funHub/fractals pakcage/cpp/builds/windows/CLI/_deps/cpp-terminal-build/tests]==] LABELS)
+add_test( [==[utf32 to utf8]==] [==[D:/code/funHub/fractals pakcage/cpp/builds/windows/CLI/_deps/cpp-terminal-build/tests/Debug/unicode.test.exe]==] [==[--test-case=utf32 to utf8]==])
+set_tests_properties( [==[utf32 to utf8]==] PROPERTIES WORKING_DIRECTORY [==[D:/code/funHub/fractals pakcage/cpp/builds/windows/CLI/_deps/cpp-terminal-build/tests]==] LABELS)
+set( unicode.test_TESTS to_narrow to_wide [==[utf32 to utf8]==])
