@@ -399,10 +399,10 @@ def checkTerminalSize():
 def checkDefeat(gameFieldSize, snake):
     y, x = snake.coordinateHistory[0]
     
-    if y >= gameFieldSize or y < 0:
-        return True
-    elif x >= gameFieldSize or x < 0:
-        return True
+    # if y >= gameFieldSize or y < 0:
+    #     return True
+    # elif x >= gameFieldSize or x < 0:
+    #     return True
     
     for i in list(snake.coordinateHistory)[1:]:
         if (y,x) == i:
@@ -410,6 +410,27 @@ def checkDefeat(gameFieldSize, snake):
 
     return False
     
+def checkDefeatByWall(gameFieldSize, snake):
+    y, x = snake.coordinateHistory[0]
+    
+    # Вычисляем БУДУЩИЕ координаты в зависимости от направления
+    if snake.direction == "up":    # Скорректируйте строки "up"/"down", 
+        y -= 1                     # если в вашем классе Snake 
+    elif snake.direction == "down":# направления называются иначе
+        y += 1
+    elif snake.direction == "left":
+        x -= 1
+    elif snake.direction == "right":
+        x += 1
+
+    # Проверяем, врежется ли змейка на СЛЕДУЮЩЕМ шаге
+    if y >= gameFieldSize or y < 0:
+        return True
+    elif x >= gameFieldSize or x < 0:
+        return True
+    
+    return False
+
 def checkWin(gameFieldSize, snake):
     if snake.bodyCount + 1 == gameFieldSize ** 2 :
         return True
@@ -460,6 +481,7 @@ def writeNewRecord(record):
 
 def updateScene(snake):
     global gameFieldSize, moveDirection, gameField
+    isWallDefeat = False
     
     while not stop_event.is_set():
         while pause_event.is_set():
@@ -467,17 +489,35 @@ def updateScene(snake):
 
         if snake.direction != moveDirection:
             snake.changeDirection(moveDirection)
+            isWallDefeat = False 
+
         
         if checkDefeat(gameFieldSize, snake):
             stop_event.set()
             printField(snake, isDefeat=True)
             writeNewRecord(snake.bodyCount - 2)
+            break
+
+        elif checkDefeatByWall(gameFieldSize, snake):
+            if isWallDefeat:
+                stop_event.set()
+                printField(snake, isDefeat=True)
+                writeNewRecord(snake.bodyCount - 2)
+                break
+            else:
+                isWallDefeat = True
+                printField(snake) 
+                time.sleep(snakeSpeed)
+                continue
+                
         
         elif checkWin(gameFieldSize, snake):
             stop_event.set()
             printField(snake, isWin=True)
             writeNewRecord(snake.bodyCount - 2)
+        
         else:
+            isWallDefeat = False
             snake.move(gameField)
             printField(snake)
 
@@ -516,8 +556,6 @@ def startGame(gameField, snake):
     snake.coordinateHistory.append((gameFieldSize//2, gameFieldSize//2 - 3))
     snake.coordinateHistory.append((gameFieldSize//2, gameFieldSize//2 - 4))
     
-
-
 def placeApple(gameField):
     global gameFieldSize
     freePlaces = []
@@ -569,6 +607,7 @@ def generateBioms(gameField):
                     gameField[y,x].isGravel = True
 
     
+
 def main():
     global gameField, moveDirection
     moves = 0
