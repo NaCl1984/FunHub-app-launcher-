@@ -6,6 +6,7 @@ from pathlib import Path
 import random 
 import shutil
 import threading
+import queue
 import time
 from pynput import keyboard
 import sys
@@ -29,6 +30,8 @@ else:
 stop_event = threading.Event()
 print_lock = threading.Lock()
 pause_event = threading.Event()
+
+input_queue = queue.Queue()
 
 MIN_TERMINAL_COLS, MIN_TERMINAL_ROWS = 150, 50
 SMALL_FIELD_SIZE, MEDIUM_FIELD_SIZE, BIG_FIELD_SIZE, LARGE_FIELD_SIZE = 10, 20, 30, 40
@@ -487,6 +490,11 @@ def updateScene(snake):
         while pause_event.is_set():
             time.sleep(0.1)
 
+        try:
+            moveDirection = input_queue.get_nowait()
+        except:
+            pass   
+
         if snake.direction != moveDirection:
             snake.changeDirection(moveDirection)
             isWallDefeat = False 
@@ -640,25 +648,29 @@ def main():
                                     if moves == 0:                                       
                                         updateSceneThread.start()
                                     moves += 1
-                                    moveDirection = 'up'
+                                    # moveDirection = 'up'
+                                    input_queue.put('up')
 
                                 elif key == keyboard.Key.down:
                                     if moves == 0:
                                         updateSceneThread.start()
                                     moves += 1
-                                    moveDirection = 'down'
+                                    # moveDirection = 'down'
+                                    input_queue.put('down')
 
                                 elif key == keyboard.Key.right:
                                     if moves == 0:
                                         updateSceneThread.start()
                                     moves += 1
-                                    moveDirection = 'right'
+                                    # moveDirection = 'right'
+                                    input_queue.put('right')
 
                                 elif key == keyboard.Key.left:
                                     if moves == 0:
                                         updateSceneThread.start()
                                     moves += 1
-                                    moveDirection = 'left'
+                                    # moveDirection = 'left'
+                                    input_queue.put('left')
                                 
                                 elif key == keyboard.Key.esc :
                                     if not pause_event.is_set():

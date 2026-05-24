@@ -9,4 +9,10 @@ set(SOURCES
     main.cpp
 )
 
+
+
 add_executable(Gnorp ${SOURCES})         # Создаём исполняемый файл
+
+if(MSVC)
+    target_compile_options(Gnorp PRIVATE /utf-8)
+endif()
