@@ -42,6 +42,8 @@ struct Coords{
 struct Ship{
     int x;
     int y;
+    int height = 1;
+    int startX, startY;
 
     void move(char dir){
         if (dir == 'r'){
@@ -52,12 +54,21 @@ struct Ship{
             this->x -= 2;
             this->y -= 1;
         }
-        else if (dir == 'u'){
-            this->y -= 1;
+        else if (dir == 'u' && (height + 1) <= 5){
+            this->height += 1;
+            this->y -= 10;
         }
-        else if (dir == 'd'){
-            this->y += 1;
+        else if (dir == 'd' && (height - 1) >= 1){
+            this->height -= 1;
+            this->y += 10;
         }
+
+
+
+        if(height > 5)
+            height = 5;
+        else if (height < 1)
+            height = 1;
     }
 
 };
@@ -271,57 +282,12 @@ Coords screenToLogic(int screenX, int screenY, int startX, int startY, int level
 }
 
 template<int Rows, int Cols>
-void scrollLevelLoop(const levelTile (&level)[Rows][Cols]){
-    int xOffset = 8;
-    int yOffset = 4;
-    int fov = 34;
-    int startX = 150;
-    int startY = -2 ;
-    int shipX = 20;
-    int shipY = 80;
-    int j;
-     
-    int currentStart = (levelLenght - fov);
-    
-    for (int pixelOffest = 0; pixelOffest < fov * 4 ; ++pixelOffest){
-        initScreen();
-        for (int y = currentStart; y < currentStart + fov; ++y){
-            for(int x = 0; x < levelWidth; ++x){
-                j = y - currentStart;
-                
-                int tileY = startY + (j * yOffset) + (x * yOffset) + pixelOffest ;
-                int tileX = startX - (j * xOffset) + ((x * xOffset)) - pixelOffest * 2;
-
-                if(level[y][x].type == 1)
-                    drawSprite(tileX, tileY, tile);
-                
-                else if(level[y][x].type == 2){
-                    for(int height = 0; height < level[y][x].height; ++height){
-                        drawSprite(tileX, tileY - (height * 8), wall);
-                    }
-                }
-
-                drawSprite(shipX, shipY, ship);
-                level[shipY][shipX].isShip = false;
-                if ((shipY < levelLenght - 1) || (shipY > 0))
-                    level[shipY - 1][shipX].isShip = true;
-                
-            }
-        }
-        
-        render();
-        std::this_thread::sleep_for(std::chrono::microseconds(100)); 
-    }
-
-}
-
-template<int Rows, int Cols>
 void gameLoop(const levelTile (&level)[Rows][Cols]){
     Ship player;
     player.x = 20;
     player.y = 80;
 
-    Coords ancorPointShip(16, 16);
+    Coords ancorPointShip(8, 8);
     
     int keyCode;
     int xOffset = 8;
@@ -357,7 +323,7 @@ void gameLoop(const levelTile (&level)[Rows][Cols]){
                     int tileY = startY + (j * yOffset) + (x * yOffset) + pixelOffest ;
                     int tileX = startX - (j * xOffset) + (x * xOffset) - pixelOffest * 2;
 
-                    logicShipCoords = screenToLogic(player.x + ancorPointShip.x, player.y + ancorPointShip.y, startX, startY, Rows, pixelOffest);
+                    logicShipCoords = screenToLogic(player.x + ancorPointShip.x, player.y + ancorPointShip.y + (player.height * 10), startX, startY, Rows, pixelOffest);
                     
                     if(logicShipX != logicShipCoords.x){
                         renderOrder[logicShipY][logicShipX].isShip = false;
@@ -376,6 +342,7 @@ void gameLoop(const levelTile (&level)[Rows][Cols]){
                         drawSprite(tileX, tileY, tile);
                     
                     if (renderOrder[y][x].isShip){
+                        drawSprite(player.x, player.y + (player.height * 10), shipShadow);
                         drawSprite(player.x, player.y, ship);
                     }
 
@@ -418,7 +385,7 @@ void gameLoop(const levelTile (&level)[Rows][Cols]){
             }
 
             render();
-            std::this_thread::sleep_for(std::chrono::microseconds(1000)); 
+            std::this_thread::sleep_for(std::chrono::microseconds(34)); 
         }
     }
     return;
