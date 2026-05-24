@@ -47,22 +47,23 @@ struct Ship{
 
     void move(char dir){
         if (dir == 'r'){
+            if(x + 2 <= 48){
             this->x += 2;
-            this->y += 1;
+            this->y += 1;}
         }
         else if (dir == 'l'){
+            if(x - 2 >= 8){
             this->x -= 2;
-            this->y -= 1;
+            this->y -= 1;}
         }
         else if (dir == 'u' && (height + 1) <= 5){
             this->height += 1;
-            this->y -= 10;
+            this->y -= 5;
         }
         else if (dir == 'd' && (height - 1) >= 1){
             this->height -= 1;
-            this->y += 10;
+            this->y += 5;
         }
-
 
 
         if(height > 5)
@@ -276,7 +277,7 @@ Coords screenToLogic(int screenX, int screenY, int startX, int startY, int level
     else if (logicY < 0)
         logicY = 0;
 
-    Coords logicCoords(logicX, logicY);
+    Coords logicCoords(logicX - 1, logicY - 2);
 
     return logicCoords;
 }
@@ -287,7 +288,7 @@ void gameLoop(const levelTile (&level)[Rows][Cols]){
     player.x = 20;
     player.y = 80;
 
-    Coords ancorPointShip(8, 8);
+    Coords ancorPointShip(16, 8);
     
     int keyCode;
     int xOffset = 8;
@@ -336,13 +337,13 @@ void gameLoop(const levelTile (&level)[Rows][Cols]){
                         renderOrder[logicShipY][logicShipX].isShip = true;
                     }
 
-                    // cout << logicShipX << " " << logicShipY << endl;
+                    // cout << player.x << " " << player.y << endl;
 
                     if(level[y][x].type == 1)
                         drawSprite(tileX, tileY, tile);
                     
                     if (renderOrder[y][x].isShip){
-                        drawSprite(player.x, player.y + (player.height * 10), shipShadow);
+                        drawSprite(player.x, player.y + (player.height * 5), shipShadow);
                         drawSprite(player.x, player.y, ship);
                     }
 
