@@ -261,6 +261,9 @@ int getKeyPressed() {
 Coords screenToLogic(int screenX, int screenY, int startX, int startY, int levelLenght, int pixelOffset){
     int xOffset = 8;
     int yOffset = 4;
+
+    screenX = screenX - 5;
+    screenY = screenY - 5;
     
     float A = (screenY - startY + (levelLenght * yOffset) - pixelOffset)/yOffset;
     float B = (screenX - startX - (levelLenght * xOffset) + 2 * pixelOffset)/xOffset;
@@ -277,7 +280,7 @@ Coords screenToLogic(int screenX, int screenY, int startX, int startY, int level
     else if (logicY < 0)
         logicY = 0;
 
-    Coords logicCoords(logicX - 1, logicY - 2);
+    Coords logicCoords(logicX - 2, logicY - 2);
 
     return logicCoords;
 }
@@ -305,12 +308,14 @@ void gameLoop(const levelTile (&level)[Rows][Cols]){
     levelTile renderOrder[Rows][Cols];
     for(int y = 0; y < Rows; ++y){
         for(int x = 0; x < Cols; ++x){
-            if (x == logicShipX && y == logicShipY)
-                renderOrder[y][x] = levelTile(0, true);  
-            else
-                renderOrder[y][x] = levelTile();
+            renderOrder[y][x] = levelTile();
         }
     }
+
+    renderOrder[logicShipY][logicShipX].isShip = true;  
+    renderOrder[logicShipY + 1][logicShipX].isShip = true;
+    renderOrder[logicShipY + 2][logicShipX].isShip = true;
+   
 
 
     while (true){
@@ -324,17 +329,29 @@ void gameLoop(const levelTile (&level)[Rows][Cols]){
                     int tileY = startY + (j * yOffset) + (x * yOffset) + pixelOffest ;
                     int tileX = startX - (j * xOffset) + (x * xOffset) - pixelOffest * 2;
 
-                    logicShipCoords = screenToLogic(player.x + ancorPointShip.x, player.y + ancorPointShip.y + (player.height * 10), startX, startY, Rows, pixelOffest);
+                    logicShipCoords = screenToLogic(player.x + ancorPointShip.x, player.y + ancorPointShip.y + (player.height * 5), startX, startY, Rows, pixelOffest);
                     
                     if(logicShipX != logicShipCoords.x){
                         renderOrder[logicShipY][logicShipX].isShip = false;
+                        renderOrder[logicShipY + 1][logicShipX].isShip = false;
+                        renderOrder[logicShipY + 2][logicShipX].isShip = false;
+
                         logicShipX = logicShipCoords.x;
+
                         renderOrder[logicShipY][logicShipX].isShip = true;
+                        renderOrder[logicShipY + 1][logicShipX].isShip = true;
+                        renderOrder[logicShipY + 2][logicShipX].isShip = true;
                     }
                     if(logicShipY != logicShipCoords.y){
                         renderOrder[logicShipY][logicShipX].isShip = false;
+                        renderOrder[logicShipY + 1][logicShipX].isShip = false;
+                        renderOrder[logicShipY + 2][logicShipX].isShip = false;
+
                         logicShipY = logicShipCoords.y;
+
                         renderOrder[logicShipY][logicShipX].isShip = true;
+                        renderOrder[logicShipY + 1][logicShipX].isShip = true;
+                        renderOrder[logicShipY + 2][logicShipX].isShip = true;
                     }
 
                     // cout << player.x << " " << player.y << endl;
@@ -344,6 +361,7 @@ void gameLoop(const levelTile (&level)[Rows][Cols]){
                     
                     if (renderOrder[y][x].isShip){
                         drawSprite(player.x, player.y + (player.height * 5), shipShadow);
+                        drawSprite(tileX, tileY, tileHighlight);
                         drawSprite(player.x, player.y, ship);
                     }
 
