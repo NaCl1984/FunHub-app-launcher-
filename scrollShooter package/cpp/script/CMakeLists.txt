@@ -11,7 +11,7 @@ set(SOURCES
 
 
 
-add_executable(Gnorp ${SOURCES})         # Создаём исполняемый файл
+add_executable(Gnorp ${SOURCES} ConsoleBackend.cpp)         # Создаём исполняемый файл
 
 if(MSVC)
     target_compile_options(Gnorp PRIVATE /utf-8)

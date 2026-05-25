@@ -458,12 +458,15 @@ def updatePackage(packageName):
         subprocess.run([sys.executable, '-m', 'pip', 'install', packageName, '--quiet', '--upgrade'], check=True, capture_output=True, text=True)
         isloadingEvent.clear()
         systemMessage(f'Plugin "{packageName}" was successfully updated.',[buttonObject('Ok', lambda: None)])
+        return True
     
     except subprocess.CalledProcessError as e:
         systemMessage(f'Failed to install plugin "{packageName}". Error: {e.stderr}', [buttonObject('Ok', lambda: None)])
+        return False
     
     except Exception as e:
         systemMessage(f'Failed to install plugin "{packageName}". Error: {e}', [buttonObject('Ok', lambda: None)])
+        return False
     
 def getPageDimentions(page):
     cols = 0
@@ -510,7 +513,44 @@ def checkUpdates():
     latestVersion = response.json()["info"]["version"]
 
     if parse(latestVersion) > parse(installedVersion):
-        systemMessage(f'Funhub not updated to latest vesrion. Update to latest version?',[buttonObject('Exit', lambda: app_exit(None)), buttonObject('Update', lambda: updatePackage(LAUNCHER_PACKAGER_NAME)), buttonObject('Launch with out update', lambda: None)])
+        systemMessage(f'Funhub not updated to latest vesrion. Update to latest version?',[buttonObject('Exit', lambda: app_exit(None)), buttonObject('Update', updateLauncher), buttonObject('Launch with out update', lambda: None)])
+
+def updateLauncher():
+        # Проверяем, что у нас есть доступ к python.exe (который будет выполнять pip)
+    python_exe = sys.executable
+    # Имя команды для запуска лаунчера после обновления.
+    # Можно использовать entry point 'funhub' (если он создан) или 'python -m funhub'
+    launcher_cmd = 'funhub'  # или [python_exe, '-m', 'funhub']
+
+    # Создаём временный bat-файл в той же директории, где находится текущий скрипт
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+    updater_bat = os.path.join(current_dir, f"update_funhub_{int(time.time())}.bat")
+
+    # Содержимое bat-файла
+    bat_content = f'''@echo off
+echo Waiting for launcher to close...
+timeout /t 2 /nobreak >nul
+
+echo Updating funhub-app-launcher...
+"{python_exe}" -m pip install --upgrade funhub-app-launcher --quiet
+
+echo Restarting launcher...
+start "" {launcher_cmd}
+
+echo Cleaning up...
+del "%~f0" >nul 2>&1
+exit
+'''
+    # Записываем bat-файл (в кодировке cp1251 для Windows)
+    with open(updater_bat, 'w', encoding='cp1251') as f:
+        f.write(bat_content)
+
+    # Запускаем bat-файл в отдельном процессе (скрытое окно)
+    subprocess.Popen(f'start /min "" "{updater_bat}"', shell=True)
+
+    # Немедленно завершаем текущий лаунчер
+    flush_input()
+    app_exit(None)
 
 def main():
     global selectedItem
