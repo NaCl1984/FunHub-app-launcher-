@@ -13,6 +13,8 @@ using namespace std;
     #include <termios.h>
     #include <unistd.h>
     #include <fcntl.h>
+    #include <sys/ioctl.h>
+        #include <unistd.h>
 #endif
 
 #ifdef __linux__
@@ -78,12 +80,26 @@ void ConsoleBackend::present(std::vector<std::vector<Pixel>>& screenBuffer,
     Rgb fg;
     Rgb bg;
     string ch;
+
+    TerminalSize termSize = getTerminalSize();
+    int spacer = (termSize.cols - width) / 2;
+
+    
+
     for (int y = 0; y < height; y += 2) {
+        
+        output += "\033[0m";
+        output.append(spacer, ' ');
+        prewFgR = prewFgG = prewFgB = -1;
+        prewBgR = prewBgG = prewBgB = -1;
+
         for (int x = 0; x < width; ++x) {
             const Pixel& upper = screenBuffer[y][x];
             const Pixel& lower = screenBuffer[y + 1][x];
             const Pixel& prewUpper = prewFrame[y][x];
             const Pixel& prewLower = prewFrame[y + 1][x];
+
+            
 
             if((upper.color.r == prewUpper.color.r && upper.color.g == prewUpper.color.g && upper.color.b == prewUpper.color.b) && (lower.color.r == prewLower.color.r && lower.color.g == prewLower.color.g && lower.color.b == prewLower.color.b) && upper.transparent == prewUpper.transparent && lower.transparent == prewLower.transparent){
                 output += "\033[C";
@@ -128,8 +144,6 @@ void ConsoleBackend::present(std::vector<std::vector<Pixel>>& screenBuffer,
             output += ch;
         }
         output += "\n";
-        // prewFgR = -1; prewFgG = -1; prewFgB = -1;
-        // prewBgR = -1; prewBgG = -1; prewBgB = -1;
     }
     prewFrame = screenBuffer;
     output += "\033[0m";
@@ -192,4 +206,26 @@ void ConsoleBackend::shutdown() {
         input_initialized = false;
     }
 #endif
+}
+
+TerminalSize ConsoleBackend::getTerminalSize(){
+    
+    TerminalSize size;
+
+    #ifdef _WIN32
+        CONSOLE_SCREEN_BUFFER_INFO csbi;
+        HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+        if (hConsole != INVALID_HANDLE_VALUE && GetConsoleScreenBufferInfo(hConsole, &csbi)) {
+            size.cols = csbi.srWindow.Right - csbi.srWindow.Left + 1;
+            size.rows = csbi.srWindow.Bottom - csbi.srWindow.Top + 1;
+        }
+    #else
+        struct winsize ws;
+        if (ioctl(STDOUT_FILENO, TIOCGWINSZ, &ws) == 0) {
+            size.rows = ws.ws_row;
+            size.cols = ws.ws_col;
+        }
+    #endif
+
+        return size;
 }

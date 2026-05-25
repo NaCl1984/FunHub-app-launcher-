@@ -8,6 +8,7 @@
 #include <chrono>
 #include "levels.h"
 #include "ConsoleBackend.h"
+#include "json.hpp"
 
 #ifdef _WIN32
     #include <conio.h>
@@ -24,6 +25,7 @@
 #endif
 
 using namespace std;
+using json = nlohmann::json;
 
 const int SCREEN_W = 80;
 const int SCREEN_H = 100;
@@ -136,6 +138,7 @@ void gameLoop(const levelTile (&level)[Rows][Cols], Backend& backend){
     int yOffset = 4;
     int startX = 0;
     int startY = 80 - (120 - SCREEN_H);
+    int pixelOffest = 0;
 
     int j;
 
@@ -150,114 +153,152 @@ void gameLoop(const levelTile (&level)[Rows][Cols], Backend& backend){
         }
     }
 
-
     renderOrder[logicShipY][logicShipX].isShip = true;  
     renderOrder[logicShipY + 1][logicShipX].isShip = true; 
     renderOrder[logicShipY + 2][logicShipX].isShip = true; 
 
+    bool isMoving = true;
 
     while (true){
+
+        initScreen();
         
-        for (int pixelOffest = 0; pixelOffest < Rows * 4 ; ++pixelOffest){
-            initScreen();
-            
-            
-            //первый слой
-            for (int y = 0; y < Rows; ++y){
-                for(int x = 0; x < Cols; ++x){
-                    j = y - Rows;
-                    
-                    int tileY = startY + (j * yOffset) + (x * yOffset) + pixelOffest ;
-                    int tileX = startX - (j * xOffset) + (x * xOffset) - pixelOffest * 2;
+        
+        //первый слой
+        for (int y = 0; y < Rows; ++y){
+            for(int x = 0; x < Cols; ++x){
+                j = y - Rows;
+                
+                int tileY = startY + (j * yOffset) + (x * yOffset) + pixelOffest ;
+                int tileX = startX - (j * xOffset) + (x * xOffset) - pixelOffest * 2;
 
-                    if(level[y][x].type == 1)
-                        drawSprite(tileX, tileY, tile);
+                if(level[y][x].type == 1)
+                    drawSprite(tileX, tileY, tile);
 
-                }
             }
-
-
-            //второй слой
-            for (int y = 0; y < Rows; ++y){
-                for(int x = 0; x < Cols; ++x){
-                    j = y - Rows;
-                    
-                    int tileY = startY + (j * yOffset) + (x * yOffset) + pixelOffest ;
-                    int tileX = startX - (j * xOffset) + (x * xOffset) - pixelOffest * 2;
-
-                    logicShipCoords = screenToLogic(player.x + ancorPointShip.x, player.y + ancorPointShip.y + (player.height * 5), startX, startY, Rows, pixelOffest);
-                    
-                    if(logicShipX != logicShipCoords.x){
-                        renderOrder[logicShipY][logicShipX].isShip = false;
-                        renderOrder[logicShipY + 1][logicShipX].isShip = false; 
-                        renderOrder[logicShipY + 2][logicShipX].isShip = false; 
-
-                        logicShipX = logicShipCoords.x;
-
-                        renderOrder[logicShipY][logicShipX].isShip = true;
-                        renderOrder[logicShipY + 1][logicShipX].isShip = true; 
-                        renderOrder[logicShipY + 2][logicShipX].isShip = true; 
-                    }
-                    if(logicShipY != logicShipCoords.y){
-                        renderOrder[logicShipY][logicShipX].isShip = false;
-                        renderOrder[logicShipY + 1][logicShipX].isShip = false; 
-                        renderOrder[logicShipY + 2][logicShipX].isShip = false; 
-
-                        logicShipY = logicShipCoords.y;
-
-                        renderOrder[logicShipY][logicShipX].isShip = true;
-                        renderOrder[logicShipY + 1][logicShipX].isShip = true; 
-                        renderOrder[logicShipY + 2][logicShipX].isShip = true; 
-  
-                    }
-              
-                    if (renderOrder[y][x].isShip)
-                        drawSprite(player.x, player.y + (player.height * 5), shipShadow);
-
-                    if(level[y][x].type == 2 && level[y][x].height < player.height){
-                        for(int height = 0; height < level[y][x].height; ++height){
-                            drawSprite(tileX, tileY - (height * 8), wall);
-                        }
-                    }
-                    
-                    if (renderOrder[y][x].isShip){
-                        drawSprite(player.x, player.y, ship);
-                    }
-
-                    if(level[y][x].type == 2  && level[y][x].height >= player.height){
-                        for(int height = 0; height < level[y][x].height; ++height){
-                            drawSprite(tileX, tileY - (height * 8), wall);
-                        }
-                    }
-                    
-                }
-            }
-
-            keyCode = backend.getKey();
-
-            if (keyCode == 27) {
-                return;
-            }
-            // else if (keyCode == 32) {
-            //     // стрельба – пока ничего не делаем, но можно вызвать функцию shoot()
-            // }
-
-            else if (keyCode == 1000){
-                player.move('u');
-            }
-            else if (keyCode == 1001){
-                player.move('d');
-            }
-            else if (keyCode == 1002){
-                player.move('l');
-            }
-            else if (keyCode == 1003){
-                player.move('r');
-            }
-
-            backend.present(screenBuffer, prewFrame);
-            std::this_thread::sleep_for(std::chrono::milliseconds(34)); 
         }
+
+
+        //второй слой
+        for (int y = 0; y < Rows; ++y){
+            for(int x = 0; x < Cols; ++x){
+                j = y - Rows;
+                
+                int tileY = startY + (j * yOffset) + (x * yOffset) + pixelOffest ;
+                int tileX = startX - (j * xOffset) + (x * xOffset) - pixelOffest * 2;
+
+                logicShipCoords = screenToLogic(player.x + ancorPointShip.x, player.y + ancorPointShip.y + (player.height * 5), startX, startY, Rows, pixelOffest);
+                
+                if(logicShipX != logicShipCoords.x){
+                    renderOrder[logicShipY][logicShipX].isShip = false;
+                    renderOrder[logicShipY + 1][logicShipX].isShip = false; 
+                    renderOrder[logicShipY + 2][logicShipX].isShip = false; 
+
+                    logicShipX = logicShipCoords.x;
+
+                    renderOrder[logicShipY][logicShipX].isShip = true;
+                    renderOrder[logicShipY + 1][logicShipX].isShip = true; 
+                    renderOrder[logicShipY + 2][logicShipX].isShip = true; 
+                }
+                if(logicShipY != logicShipCoords.y){
+                    renderOrder[logicShipY][logicShipX].isShip = false;
+                    renderOrder[logicShipY + 1][logicShipX].isShip = false; 
+                    renderOrder[logicShipY + 2][logicShipX].isShip = false; 
+
+                    logicShipY = logicShipCoords.y;
+
+                    renderOrder[logicShipY][logicShipX].isShip = true;
+                    renderOrder[logicShipY + 1][logicShipX].isShip = true; 
+                    renderOrder[logicShipY + 2][logicShipX].isShip = true; 
+
+                }
+            
+                if (renderOrder[y][x].isShip)
+                    drawSprite(player.x, player.y + (player.height * 5), shipShadow);
+
+                if(level[y][x].type == 2 && level[y][x].height < player.height){
+                    for(int height = 0; height < level[y][x].height; ++height){
+                        drawSprite(tileX, tileY - (height * 8), wall);
+                    }
+                }
+                
+                if (renderOrder[y][x].isShip){
+                    drawSprite(player.x, player.y, ship);
+                }
+
+                if(level[y][x].type == 2  && level[y][x].height >= player.height){
+                    for(int height = 0; height < level[y][x].height; ++height){
+                        drawSprite(tileX, tileY - (height * 8), wall);
+                    }
+                }
+                
+            }
+        }
+
+        keyCode = backend.getKey();
+
+        if (keyCode == 27) {
+            return;
+        }
+        // else if (keyCode == 32) {
+        //     // стрельба – пока ничего не делаем, но можно вызвать функцию shoot()
+        // }
+
+        else if (keyCode == 1000){
+            player.move('u');
+        }
+        else if (keyCode == 1001){
+            player.move('d');
+        }
+        else if (keyCode == 1002){
+            player.move('l');
+        }
+        else if (keyCode == 1003){
+            player.move('r');
+        }
+
+        Coords shipHitboxUpperScreenPoint(player.x + 13, player.y + 3);
+        Coords shipHitboxLowerScreenPoint(player.x + 3, player.y + 13);
+        
+        Coords shipHitboxUpperLogicPoint = screenToLogic(shipHitboxUpperScreenPoint.x, shipHitboxUpperScreenPoint.y + (player.height * 5), startX, startY, Rows, pixelOffest);
+        Coords shipHitboxLowerLogicPoint = screenToLogic(shipHitboxUpperScreenPoint.x, player.y + 13 + (player.height * 5), startX, startY, Rows, pixelOffest);
+
+
+        if(level[shipHitboxUpperLogicPoint.y][shipHitboxUpperLogicPoint.x].type == 2 || level[shipHitboxUpperLogicPoint.y + 1][shipHitboxUpperLogicPoint.x].type == 2 || level[shipHitboxUpperLogicPoint.y - 1][shipHitboxUpperLogicPoint.x].type == 2){
+            for(int i = -1; i < 1; ++i){          
+                int x = shipHitboxUpperLogicPoint.x;
+                int y = shipHitboxUpperLogicPoint.y + i;
+                int j = y - Rows;
+                
+                Coords wallMinPoit(startX - (j * xOffset) + (x * xOffset) - (pixelOffest * 2) + 3, startY + (j * yOffset) + (x * yOffset) + pixelOffest + 13);
+                Coords wallMaxPoit(startX - (j * xOffset) + (x * xOffset) - (pixelOffest * 2) + 13, startY + (j * yOffset) + (x * yOffset) + pixelOffest + 3);
+
+                if((wallMinPoit.x <= (shipHitboxUpperScreenPoint.x) && (shipHitboxUpperScreenPoint.x) <= wallMaxPoit.x) && (wallMinPoit.y >= (shipHitboxUpperScreenPoint.y) && (shipHitboxUpperScreenPoint.y) >= wallMaxPoit.y)){
+                    isMoving = false;
+                }
+            }
+        }
+
+        if(level[shipHitboxLowerLogicPoint.y][shipHitboxLowerLogicPoint.x].type == 2 || level[shipHitboxLowerLogicPoint.y + 1][shipHitboxLowerLogicPoint.x].type == 2 || level[shipHitboxLowerLogicPoint.y - 1][shipHitboxLowerLogicPoint.x].type == 2){
+            for(int i = -1; i < 1; ++i){          
+                int x = shipHitboxLowerLogicPoint.x;
+                int y = shipHitboxLowerLogicPoint.y + i;
+                int j = y - Rows;
+                
+                Coords wallMinPoit(startX - (j * xOffset) + (x * xOffset) - (pixelOffest * 2) + 3, startY + (j * yOffset) + (x * yOffset) + pixelOffest + 13);
+                Coords wallMaxPoit(startX - (j * xOffset) + (x * xOffset) - (pixelOffest * 2) + 13, startY + (j * yOffset) + (x * yOffset) + pixelOffest + 3);
+
+                if((wallMinPoit.x <= (shipHitboxLowerScreenPoint.x) && (shipHitboxLowerScreenPoint.x) <= wallMaxPoit.x) && (wallMinPoit.y >= (shipHitboxLowerScreenPoint.y) && (shipHitboxLowerScreenPoint.y) >= wallMaxPoit.y)){
+                    isMoving = false;
+                }
+            }
+        }
+
+        if(isMoving) ++pixelOffest;
+        if(pixelOffest >= Rows * 4) break; //сделать нормально завершение уровня;
+
+        backend.present(screenBuffer, prewFrame);
+        std::this_thread::sleep_for(std::chrono::milliseconds(34)); 
     }
 }
 
@@ -267,6 +308,8 @@ void mainMenuLoop(){
 
 int main() {
     ConsoleBackend backend;
+    
+    
     if (!backend.init(SCREEN_W, SCREEN_H)) {
         return 1;
     } 

@@ -7,6 +7,12 @@
     #include <termios.h>
 #endif
 
+struct TerminalSize {
+    int rows;
+    int cols;
+};
+
+
 class ConsoleBackend : public Backend {
 public:
     ConsoleBackend();
@@ -23,6 +29,8 @@ private:
     // Для хранения предыдущих цветов при выводе (как в вашем render)
     int prewFgR = -1, prewFgG = -1, prewFgB = -1;
     int prewBgR = -1, prewBgG = -1, prewBgB = -1;
+
+    TerminalSize getTerminalSize();
 
 #ifdef __linux__
     static struct termios old_termios;
