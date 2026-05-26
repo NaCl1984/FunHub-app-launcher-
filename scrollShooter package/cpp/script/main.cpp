@@ -3,7 +3,7 @@
 #include <string>
 #include "sprites.h"   // ваш сгенерированный файл
 #include <fcntl.h>
-#include <io.h>
+// #include <io.h>
 #include <thread>
 #include <chrono>
 #include "levels.h"
@@ -257,15 +257,45 @@ void gameLoop(const levelTile (&level)[Rows][Cols], Backend& backend){
             player.move('r');
         }
 
-        Coords shipHitboxUpperScreenPoint(player.x + 13, player.y + 3);
-        Coords shipHitboxLowerScreenPoint(player.x + 3, player.y + 13);
+        Coords shipHitboxUpperScreenPoint(player.x + 13, player.y + 7);
+        Coords shipHitboxLowerScreenPoint(player.x + 3, player.y + 9);
         
         Coords shipHitboxUpperLogicPoint = screenToLogic(shipHitboxUpperScreenPoint.x, shipHitboxUpperScreenPoint.y + (player.height * 5), startX, startY, Rows, pixelOffest);
-        Coords shipHitboxLowerLogicPoint = screenToLogic(shipHitboxUpperScreenPoint.x, player.y + 13 + (player.height * 5), startX, startY, Rows, pixelOffest);
+        Coords shipHitboxLowerLogicPoint = screenToLogic(shipHitboxLowerScreenPoint.x, shipHitboxLowerScreenPoint.y + (player.height * 5), startX, startY, Rows, pixelOffest);
+
+        const int shipHbW = 13 - 3;
+        const int shipHbH = 8 - 7;
+
+        Pixel shipHitbox[shipHbH][shipHbW];
+        
+        for(int y = 0; y < shipHbH; ++y){
+            for(int x = 0; x < shipHbW; ++x){
+                shipHitbox[y][x] = {{1,255,3}, false};
+            }
+        }
+
+        const int wallHbW = 10;
+        const int wallHbH = 10;
+
+        Pixel wallHitbox[wallHbH][wallHbW];
+        
+        for(int y = 0; y < wallHbH; ++y){
+            for(int x = 0; x < wallHbW; ++x){
+                if(y == 0 || y == wallHbH - 1 || x == 0 || x == wallHbW - 1)
+                    wallHitbox[y][x] = {{1,255,3}, false};
+                else
+                    wallHitbox[y][x] = {{1,255,3}, true};
+            }
+        }
+
+        // drawSprite(shipHitboxLowerScreenPoint.x, shipHitboxUpperScreenPoint.y, shipHitbox);
+        // drawSprite(shipHitboxLowerScreenPoint.x, shipHitboxLowerScreenPoint.y, (const Pixel[1][1]) {{{{1,255,3}, false}}});
+
+        // drawSprite(shipHitboxUpperLogicPoint.x, shipHitboxUpperLogicPoint.y, tileHighlight);
 
 
         if(level[shipHitboxUpperLogicPoint.y][shipHitboxUpperLogicPoint.x].type == 2 || level[shipHitboxUpperLogicPoint.y + 1][shipHitboxUpperLogicPoint.x].type == 2 || level[shipHitboxUpperLogicPoint.y - 1][shipHitboxUpperLogicPoint.x].type == 2){
-            for(int i = -1; i < 1; ++i){          
+            for(int i = -1; i < 2; ++i){          
                 int x = shipHitboxUpperLogicPoint.x;
                 int y = shipHitboxUpperLogicPoint.y + i;
                 int j = y - Rows;
@@ -273,29 +303,32 @@ void gameLoop(const levelTile (&level)[Rows][Cols], Backend& backend){
                 Coords wallMinPoit(startX - (j * xOffset) + (x * xOffset) - (pixelOffest * 2) + 3, startY + (j * yOffset) + (x * yOffset) + pixelOffest + 13);
                 Coords wallMaxPoit(startX - (j * xOffset) + (x * xOffset) - (pixelOffest * 2) + 13, startY + (j * yOffset) + (x * yOffset) + pixelOffest + 3);
 
-                if((wallMinPoit.x <= (shipHitboxUpperScreenPoint.x) && (shipHitboxUpperScreenPoint.x) <= wallMaxPoit.x) && (wallMinPoit.y >= (shipHitboxUpperScreenPoint.y) && (shipHitboxUpperScreenPoint.y) >= wallMaxPoit.y)){
+                // drawSprite(wallMinPoit.x, wallMinPoit.y, wallHitbox);
+                // drawSprite(wallMaxPoit.x, wallMaxPoit.y, wallHitbox);
+
+                if((wallMinPoit.x <= (shipHitboxUpperScreenPoint.x) && (shipHitboxUpperScreenPoint.x) <= wallMaxPoit.x) && (wallMinPoit.y >= (shipHitboxUpperScreenPoint.y) && (shipHitboxUpperScreenPoint.y) >= wallMaxPoit.y) && (level[y][x].type == 2)){
                     isMoving = false;
                 }
             }
         }
 
-        if(level[shipHitboxLowerLogicPoint.y][shipHitboxLowerLogicPoint.x].type == 2 || level[shipHitboxLowerLogicPoint.y + 1][shipHitboxLowerLogicPoint.x].type == 2 || level[shipHitboxLowerLogicPoint.y - 1][shipHitboxLowerLogicPoint.x].type == 2){
-            for(int i = -1; i < 1; ++i){          
-                int x = shipHitboxLowerLogicPoint.x;
-                int y = shipHitboxLowerLogicPoint.y + i;
-                int j = y - Rows;
+        // if(level[shipHitboxLowerLogicPoint.y][shipHitboxLowerLogicPoint.x].type == 2 || level[shipHitboxLowerLogicPoint.y + 1][shipHitboxLowerLogicPoint.x].type == 2 || level[shipHitboxLowerLogicPoint.y - 1][shipHitboxLowerLogicPoint.x].type == 2){
+        //     for(int i = -1; i < 2; ++i){          
+        //         int x = shipHitboxLowerLogicPoint.x;
+        //         int y = shipHitboxLowerLogicPoint.y + i;
+        //         int j = y - Rows;
                 
-                Coords wallMinPoit(startX - (j * xOffset) + (x * xOffset) - (pixelOffest * 2) + 3, startY + (j * yOffset) + (x * yOffset) + pixelOffest + 13);
-                Coords wallMaxPoit(startX - (j * xOffset) + (x * xOffset) - (pixelOffest * 2) + 13, startY + (j * yOffset) + (x * yOffset) + pixelOffest + 3);
+        //         Coords wallMinPoit(startX - (j * xOffset) + (x * xOffset) - (pixelOffest * 2) + 3, startY + (j * yOffset) + (x * yOffset) + pixelOffest + 13);
+        //         Coords wallMaxPoit(startX - (j * xOffset) + (x * xOffset) - (pixelOffest * 2) + 13, startY + (j * yOffset) + (x * yOffset) + pixelOffest + 3);
 
-                if((wallMinPoit.x <= (shipHitboxLowerScreenPoint.x) && (shipHitboxLowerScreenPoint.x) <= wallMaxPoit.x) && (wallMinPoit.y >= (shipHitboxLowerScreenPoint.y) && (shipHitboxLowerScreenPoint.y) >= wallMaxPoit.y)){
-                    isMoving = false;
-                }
-            }
-        }
+        //         if((wallMinPoit.x <= (shipHitboxLowerScreenPoint.x) && (shipHitboxLowerScreenPoint.x) <= wallMaxPoit.x) && (wallMinPoit.y >= (shipHitboxLowerScreenPoint.y) && (shipHitboxLowerScreenPoint.y) >= wallMaxPoit.y) && (level[y][x].type == 2)){
+        //             isMoving = false;
+        //         }
+        //     }
+        // }
 
         if(isMoving) ++pixelOffest;
-        if(pixelOffest >= Rows * 4) break; //сделать нормально завершение уровня;
+        if(pixelOffest >= Rows * 4) pixelOffest = 0; //сделать нормально завершение уровня;
 
         backend.present(screenBuffer, prewFrame);
         std::this_thread::sleep_for(std::chrono::milliseconds(34)); 
