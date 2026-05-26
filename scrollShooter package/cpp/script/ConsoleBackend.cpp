@@ -96,15 +96,15 @@ void ConsoleBackend::present(std::vector<std::vector<Pixel>>& screenBuffer,
         for (int x = 0; x < width; ++x) {
             const Pixel& upper = screenBuffer[y][x];
             const Pixel& lower = screenBuffer[y + 1][x];
-            const Pixel& prewUpper = prewFrame[y][x];
-            const Pixel& prewLower = prewFrame[y + 1][x];
+            // const Pixel& prewUpper = prewFrame[y][x];
+            // const Pixel& prewLower = prewFrame[y + 1][x];
 
             
 
-            if((upper.color.r == prewUpper.color.r && upper.color.g == prewUpper.color.g && upper.color.b == prewUpper.color.b) && (lower.color.r == prewLower.color.r && lower.color.g == prewLower.color.g && lower.color.b == prewLower.color.b) && upper.transparent == prewUpper.transparent && lower.transparent == prewLower.transparent){
-                output += "\033[C";
-                continue;
-            }
+            // if((upper.color.r == prewUpper.color.r && upper.color.g == prewUpper.color.g && upper.color.b == prewUpper.color.b) && (lower.color.r == prewLower.color.r && lower.color.g == prewLower.color.g && lower.color.b == prewLower.color.b) && upper.transparent == prewUpper.transparent && lower.transparent == prewLower.transparent){
+            //     output += "\033[C";
+            //     continue;
+            // }
 
             if (!upper.transparent && !lower.transparent) {
                 // оба есть – верхний полублок цветом текста, нижний – фоном
@@ -145,7 +145,7 @@ void ConsoleBackend::present(std::vector<std::vector<Pixel>>& screenBuffer,
         }
         output += "\n";
     }
-    prewFrame = screenBuffer;
+    // prewFrame = screenBuffer;
     output += "\033[0m";
     #ifdef _WIN32
         HANDLE hOut = GetStdHandle(STD_OUTPUT_HANDLE);

@@ -188,7 +188,7 @@ def printField(snake, isWin = False, isDefeat = False, isPaused=False):
 
         countApples = snake.bodyCount - 2
 
-        counter = 'Apples eated: ' + str(countApples)
+        counter = 'Apples eated: ' + str(countApples) + "   "
         counter = ' ' * int((os.get_terminal_size().columns - len(counter))//2) + counter + '\n'
 
         for r in range(gameFieldSize):
@@ -677,11 +677,23 @@ def main():
                                         pause_event.set()
                                         printField(snake, isPaused=True)
                                     else:
+                                        try:
+                                            while True:
+                                                input_queue.get_nowait()
+                                        except:
+                                            pass        
                                         pause_event.clear()
                                         sys.stdout.write('\033[2J\033[H')
                                         sys.stdout.flush()
 
                             if ((hasattr(key, 'vk') and key.vk == 82) or key == keyboard.KeyCode.from_char('r') or (hasattr(key, 'char') and key.char == 'r')) and stop_event.is_set():
+                                sys.stdout.write('\033[2J\033[H')
+                                sys.stdout.flush()
+                                try:
+                                    while True:
+                                        input_queue.get_nowait()
+                                except:
+                                    pass 
                                 moves = 0
                                 updateSceneThread.join()
                                 updateSceneThread = threading.Thread(target=updateScene, args=(snake,), daemon=True)
