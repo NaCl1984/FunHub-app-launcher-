@@ -28,6 +28,7 @@ ConsoleBackend::ConsoleBackend() {
 
 ConsoleBackend::~ConsoleBackend() {
     // деструктор – обычно пустой, если есть shutdown()
+    shutdown();
 }
 
 bool ConsoleBackend::init(int screenWidth, int screenHeight){
@@ -48,6 +49,12 @@ bool ConsoleBackend::init(int screenWidth, int screenHeight){
     #endif
 
     #ifdef _WIN32
+        hStdin = GetStdHandle(STD_INPUT_HANDLE);
+        if (hStdin != INVALID_HANDLE_VALUE) {
+            GetConsoleMode(hStdin, &originalConsoleMode);
+            // Убираем строковый ввод и эхо
+            SetConsoleMode(hStdin, originalConsoleMode & ~(ENABLE_LINE_INPUT | ENABLE_ECHO_INPUT));
+        }
         SetConsoleOutputCP(CP_UTF8);
         SetConsoleCP(CP_UTF8);
         HANDLE hOut = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -198,14 +205,28 @@ int ConsoleBackend::getKey() {
     return 0;
 }
 
-
 void ConsoleBackend::shutdown() {
 #ifdef __linux__
     if (input_initialized) {
         tcsetattr(STDIN_FILENO, TCSANOW, &old_termios);
         input_initialized = false;
     }
+    std::cout << "\033[?25h";   // показать курсор
+    std::cout.flush();
 #endif
+
+#ifdef _WIN32
+    if (hStdin != INVALID_HANDLE_VALUE && originalConsoleMode) {
+            SetConsoleMode(hStdin, originalConsoleMode);
+            // Показать курсор (если скрывали)
+            HANDLE hOut = GetStdHandle(STD_OUTPUT_HANDLE);
+            CONSOLE_CURSOR_INFO ci;
+            GetConsoleCursorInfo(hOut, &ci);
+            ci.bVisible = TRUE;
+            SetConsoleCursorInfo(hOut, &ci);
+        }
+#endif
+
 }
 
 TerminalSize ConsoleBackend::getTerminalSize(){

@@ -1,5 +1,5 @@
 #pragma once
-#include "backend.h"
+#include "Backend.h"
 
 #ifdef _WIN32
     #include <windows.h>
@@ -31,7 +31,10 @@ private:
     int prewBgR = -1, prewBgG = -1, prewBgB = -1;
 
     TerminalSize getTerminalSize();
-
+#ifdef _WIN32
+    HANDLE hStdin;
+    DWORD originalConsoleMode;
+#endif
 #ifdef __linux__
     static struct termios old_termios;
     static bool input_initialized;

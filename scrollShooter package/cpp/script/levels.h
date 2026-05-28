@@ -18,7 +18,7 @@ levelTile level1[34][6] = {
         ,{levelTile(),levelTile(),levelTile(),levelTile(),levelTile(),levelTile()}
         ,{levelTile(),levelTile(),levelTile(),levelTile(),levelTile(),levelTile()}
         ,{levelTile(),levelTile(),levelTile(),levelTile(),levelTile(),levelTile()}
-        ,{levelTile(1),levelTile(1),levelTile(1),levelTile(1),levelTile(1),levelTile(1)}
+        ,{levelTile(1),levelTile(3, false, 3),levelTile(1),levelTile(1),levelTile(1),levelTile(1)}
         ,{levelTile(1),levelTile(1),levelTile(1),levelTile(1),levelTile(1),levelTile(1)}
         ,{levelTile(1),levelTile(1),levelTile(1),levelTile(1),levelTile(1),levelTile(1)}
         ,{levelTile(1),levelTile(1),levelTile(1),levelTile(1),levelTile(1),levelTile(1)}
@@ -30,7 +30,7 @@ levelTile level1[34][6] = {
         ,{levelTile(1),levelTile(1),levelTile(1),levelTile(1),levelTile(1),levelTile(1)}
         ,{levelTile(1),levelTile(1),levelTile(1),levelTile(1),levelTile(1),levelTile(1)}
         ,{levelTile(1),levelTile(1),levelTile(1),levelTile(1),levelTile(1),levelTile(1)}
-        ,{levelTile(1),levelTile(1),levelTile(1),levelTile(1),levelTile(2, false, 2),levelTile(2)}   //wall here
+        ,{levelTile(2, false, 3),levelTile(2, false, 2),levelTile(2, false, 3),levelTile(2, false, 1),levelTile(2, false, 2),levelTile(2)}   //wall here
         ,{levelTile(1),levelTile(1),levelTile(1),levelTile(1),levelTile(1),levelTile(1)}
         ,{levelTile(1),levelTile(1),levelTile(1),levelTile(1),levelTile(1),levelTile(1)}
         ,{levelTile(1),levelTile(1),levelTile(1),levelTile(1),levelTile(1),levelTile(1)}
