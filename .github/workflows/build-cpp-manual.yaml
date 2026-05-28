@@ -1,7 +1,7 @@
 name: Manual C++ Build (multi-OS)
 
 on:
-  workflow_dispatch:   # Ручной запуск
+  workflow_dispatch:
     inputs:
       build_type:
         description: 'Тип сборки'
@@ -26,6 +26,10 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 1
+          persist-credentials: false
 
       - name: Configure CMake
         working-directory: ${{ github.workspace }}/${{ github.event.inputs.subproject_path }}
@@ -35,7 +39,7 @@ jobs:
         working-directory: ${{ github.workspace }}/${{ github.event.inputs.subproject_path }}
         run: cmake --build build --config ${{ github.event.inputs.build_type }}
 
-      - name: Upload artifacts (executables)
+      - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
           name: cpp-app-${{ matrix.os }}-${{ github.event.inputs.build_type }}
