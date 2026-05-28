@@ -9,6 +9,8 @@
 #include "levels.h"
 #include "ConsoleBackend.h"
 #include <unordered_map>
+#include <cmath>
+#include <algorithm>
 
 #ifdef _WIN32
     #include <conio.h>
