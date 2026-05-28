@@ -24,3 +24,32 @@ Thumbs.db
 .pypi-token
 publish.ps1
 publish.bat
+
+# Временные папки сборки CMake (важно!)
+**_deps/
+**/builds/
+**/CMakeFiles/
+**/*.dir/
+build/
+cmake-build-*/
+out/
+
+# Артефакты компиляции
+*.exe
+*.o
+*.obj
+*.lib
+*.dll
+*.so
+*.dylib
+*.a
+
+# Папки IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Системные файлы
+.DS_Store
+Thumbs.db
