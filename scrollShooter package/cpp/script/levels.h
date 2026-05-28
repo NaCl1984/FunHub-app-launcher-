@@ -14,11 +14,8 @@ this->isShip = isShip;
 };
 
 // Уровень 100 тайлов (110 строк с буфером)
-levelTile level1[110][6] = {
+levelTile level1[104][6] = {
 // 5 пустых строк сверху (финиш)
-{levelTile(),levelTile(),levelTile(),levelTile(),levelTile(),levelTile()},
-{levelTile(),levelTile(),levelTile(),levelTile(),levelTile(),levelTile()},
-{levelTile(),levelTile(),levelTile(),levelTile(),levelTile(),levelTile()},
 {levelTile(),levelTile(),levelTile(),levelTile(),levelTile(),levelTile()},
 {levelTile(),levelTile(),levelTile(),levelTile(),levelTile(),levelTile()},
 
@@ -122,20 +119,15 @@ levelTile level1[110][6] = {
 
 // 5 пустых строк снизу (старт)
 {levelTile(),levelTile(),levelTile(),levelTile(),levelTile(),levelTile()},
-{levelTile(),levelTile(),levelTile(),levelTile(),levelTile(),levelTile()},
-{levelTile(),levelTile(),levelTile(),levelTile(),levelTile(),levelTile()},
-{levelTile(),levelTile(),levelTile(),levelTile(),levelTile(),levelTile()},
 {levelTile(),levelTile(),levelTile(),levelTile(),levelTile(),levelTile()}
 };
 
 // Уровень 150 тайлов (160 строк с буфером)
-levelTile level2[160][6] = {
+levelTile level2[154][6] = {
 // 5 пустых строк сверху
 {levelTile(),levelTile(),levelTile(),levelTile(),levelTile(),levelTile()},
 {levelTile(),levelTile(),levelTile(),levelTile(),levelTile(),levelTile()},
-{levelTile(),levelTile(),levelTile(),levelTile(),levelTile(),levelTile()},
-{levelTile(),levelTile(),levelTile(),levelTile(),levelTile(),levelTile()},
-{levelTile(),levelTile(),levelTile(),levelTile(),levelTile(),levelTile()},
+
 
 // ===== Активная зона: 150 строк =====
 // Начальный ровный участок (10 строк)
@@ -257,8 +249,6 @@ levelTile level2[160][6] = {
 
 // 5 пустых строк снизу
 {levelTile(),levelTile(),levelTile(),levelTile(),levelTile(),levelTile()},
-{levelTile(),levelTile(),levelTile(),levelTile(),levelTile(),levelTile()},
-{levelTile(),levelTile(),levelTile(),levelTile(),levelTile(),levelTile()},
-{levelTile(),levelTile(),levelTile(),levelTile(),levelTile(),levelTile()},
 {levelTile(),levelTile(),levelTile(),levelTile(),levelTile(),levelTile()}
+
 };

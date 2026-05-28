@@ -1,0 +1,4 @@
+# Включаем бинарники (они не входят в пакет по умолчанию, так как не .py)
+recursive-include my_cpp_shooter/binaries *
+# Включаем README
+include README.md
