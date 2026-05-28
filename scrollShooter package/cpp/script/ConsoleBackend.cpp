@@ -1,9 +1,10 @@
 #include "ConsoleBackend.h"
 #include <iostream>
+#include <sstream>
 #include <string>
+#include <vector>
 #include <thread>
 #include <chrono>
-#include <string>
 using namespace std;
 
 #ifdef _WIN32
@@ -154,6 +155,39 @@ void ConsoleBackend::present(std::vector<std::vector<Pixel>>& screenBuffer,
     }
     // prewFrame = screenBuffer;
     output += "\033[0m";
+    writeToConsole(output);
+}
+
+void ConsoleBackend::drawCenterdText(std::string text){
+    TerminalSize termSize = getTerminalSize();
+
+    string output = "";
+
+    std::vector<std::string> lines;
+    std::istringstream stream(text);
+    std::string line;
+    while (std::getline(stream, line)) {
+        lines.push_back(line);
+        lines.push_back("");
+    }
+    
+    output.append((termSize.rows - lines.size()) / 2, '\n');
+
+    for(auto l : lines){
+        output += "\033[0m";
+        int spacer = (termSize.cols - l.size()) / 2;
+        output.append((termSize.cols - 80) / 2, ' ');
+        output += "\033[48;2;0;0;0m";
+        output.append(spacer - ((termSize.cols - 80) / 2), ' ');
+        output += l + '\n';
+
+    }
+
+    writeToConsole(output);
+
+}
+
+void ConsoleBackend::writeToConsole(std::string output){
     #ifdef _WIN32
         HANDLE hOut = GetStdHandle(STD_OUTPUT_HANDLE);
         COORD pos = {0, 0};
@@ -165,6 +199,7 @@ void ConsoleBackend::present(std::vector<std::vector<Pixel>>& screenBuffer,
         write(STDOUT_FILENO, output.c_str(), output.size());
     #endif
 }
+
 
 int ConsoleBackend::getKey() {
 #ifdef _WIN32

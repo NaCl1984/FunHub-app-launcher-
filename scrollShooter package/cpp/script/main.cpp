@@ -29,7 +29,7 @@ using namespace std;
 
 const uint8_t SCREEN_W = 80;
 const uint8_t SCREEN_H = 100;
-uint8_t state = 2;
+int8_t state = 1;
 
 std::vector<std::vector<Pixel>> screenBuffer(SCREEN_H, std::vector<Pixel>(SCREEN_W));
 std::vector<std::vector<Pixel>> prewFrame(SCREEN_H, std::vector<Pixel>(SCREEN_W));
@@ -155,7 +155,9 @@ Coords screenToLogic(int screenX, int screenY, int startX, int startY, int level
 }
 
 template<int Rows, int Cols>
-void gameLoop(const levelTile (&level)[Rows][Cols], Backend& backend){
+bool gameLoop(const levelTile (&level)[Rows][Cols], Backend& backend){
+    const Pixel debugPixel[1][1] = {{{{1,255,3}, false}}};
+    
     uint8_t frameTime = 60;
 
     Ship player;
@@ -174,6 +176,7 @@ void gameLoop(const levelTile (&level)[Rows][Cols], Backend& backend){
 
     uint8_t bulletColldown = 0;
     uint8_t selfExpFrame = 0;
+    uint8_t animationFrame = 0;
 
     Coords logicShipCoords = screenToLogic(player.x + ancorPointShip.x, player.y + ancorPointShip.y, startX, startY, Rows, 0);
     int logicShipX = logicShipCoords.x;
@@ -222,7 +225,7 @@ void gameLoop(const levelTile (&level)[Rows][Cols], Backend& backend){
 
         for (auto& b : bullets) {
             Coords bulletLogicCoords = screenToLogic(b.x + 11, b.y + (player.heightStep * b.height) + 6, startX, startY, Rows, pixelOffest);
-            if (level[bulletLogicCoords.y][bulletLogicCoords.x].type == 3 && b.dir == 1){
+            if (level[bulletLogicCoords.y][bulletLogicCoords.x].type == 3 && b.dir == 1 && level[bulletLogicCoords.y][bulletLogicCoords.x].height == b.height){
                 auto it = enemys.find({bulletLogicCoords.x, bulletLogicCoords.y});
                 if (it != enemys.end()) {
                     it->second.expFrame = 1;
@@ -244,117 +247,177 @@ void gameLoop(const levelTile (&level)[Rows][Cols], Backend& backend){
                     b.active = true;
                     b.height = level[e.y][e.x].height;
                     bullets.push_back(b);
-                    e.bulletColldown = 20;
+                    e.bulletColldown = 30;
                 }
                 else --e.bulletColldown;
             }
         }
 
-        //первый слой
-        for (int y = 0; y < Rows; ++y){
-            for(int x = 0; x < Cols; ++x){
-                j = y - Rows;
-                
-                int tileY = startY + (j * yOffset) + (x * yOffset) + pixelOffest ;
-                int tileX = startX - (j * xOffset) + (x * xOffset) - pixelOffest * 2;
-
-                if(level[y][x].type == 1 || level[y][x].type == 3)
-                    drawSprite(tileX, tileY, tile);
-
-            }
-        }
-
-        for (auto& b : bullets) {
-            drawSprite(b.x, b.y + (b.height * player.heightStep), bulletShadow);
-        }
-
-        //второй слой
-        for (int y = 0; y < Rows; ++y){
-            for(int x = 0; x < Cols; ++x){
-                j = y - Rows;
-                
-                int tileY = startY + (j * yOffset) + (x * yOffset) + pixelOffest;
-                int tileX = startX - (j * xOffset) + (x * xOffset) - pixelOffest * 2;
-
-                logicShipCoords = screenToLogic(player.x + ancorPointShip.x, player.y + ancorPointShip.y + (player.height * player.heightStep), startX, startY, Rows, pixelOffest);
-                
-                if(logicShipX != logicShipCoords.x){
-                    renderOrder[logicShipY][logicShipX].isShip = false;
-                    renderOrder[logicShipY + 1][logicShipX].isShip = false; 
-                    renderOrder[logicShipY + 2][logicShipX].isShip = false; 
-
-                    logicShipX = logicShipCoords.x;
-
-                    renderOrder[logicShipY][logicShipX].isShip = true;
-                    renderOrder[logicShipY + 1][logicShipX].isShip = true; 
-                    renderOrder[logicShipY + 2][logicShipX].isShip = true; 
-                }
-                if(logicShipY != logicShipCoords.y){
-                    renderOrder[logicShipY][logicShipX].isShip = false;
-                    renderOrder[logicShipY + 1][logicShipX].isShip = false; 
-                    renderOrder[logicShipY + 2][logicShipX].isShip = false; 
-
-                    logicShipY = logicShipCoords.y;
-
-                    renderOrder[logicShipY][logicShipX].isShip = true;
-                    renderOrder[logicShipY + 1][logicShipX].isShip = true; 
-                    renderOrder[logicShipY + 2][logicShipX].isShip = true; 
-
-                }
-            
-                if (renderOrder[y][x].isShip && !isDefeat){
-                    drawSprite(player.x, player.y + (player.height * player.heightStep), shipShadow);
-                }
+        if(selfExpFrame < 20){
+            //первый слой
+            for (int y = 0; y < Rows; ++y){
+                for(int x = 0; x < Cols; ++x){
+                    j = y - Rows;
                     
+                    int tileY = startY + (j * yOffset) + (x * yOffset) + pixelOffest ;
+                    int tileX = startX - (j * xOffset) + (x * xOffset) - pixelOffest * 2;
 
-                if(level[y][x].type == 2 && level[y][x].height < player.height){
-                    for(int height = 0; height < level[y][x].height; ++height){
-                        drawSprite(tileX, tileY - (height * 8), wall);
+                    if(level[y][x].type == 1 || level[y][x].type == 3)
+                        drawSprite(tileX, tileY, tile);
+
+                }
+            }
+
+            for (auto& b : bullets) {
+                drawSprite(b.x, b.y + (b.height * player.heightStep), bulletShadow);
+            }
+
+            //второй слой
+            for (int y = 0; y < Rows; ++y){
+                for(int x = 0; x < Cols; ++x){
+                    j = y - Rows;
+                    
+                    int tileY = startY + (j * yOffset) + (x * yOffset) + pixelOffest;
+                    int tileX = startX - (j * xOffset) + (x * xOffset) - pixelOffest * 2;
+
+                    logicShipCoords = screenToLogic(player.x + ancorPointShip.x, player.y + ancorPointShip.y + (player.height * player.heightStep), startX, startY, Rows, pixelOffest);
+                    
+                    if(logicShipX != logicShipCoords.x){
+                        renderOrder[logicShipY][logicShipX].isShip = false;
+                        renderOrder[logicShipY + 1][logicShipX].isShip = false; 
+                        renderOrder[logicShipY + 2][logicShipX].isShip = false; 
+
+                        logicShipX = logicShipCoords.x;
+
+                        renderOrder[logicShipY][logicShipX].isShip = true;
+                        renderOrder[logicShipY + 1][logicShipX].isShip = true; 
+                        renderOrder[logicShipY + 2][logicShipX].isShip = true; 
                     }
-                }
+                    if(logicShipY != logicShipCoords.y){
+                        renderOrder[logicShipY][logicShipX].isShip = false;
+                        renderOrder[logicShipY + 1][logicShipX].isShip = false; 
+                        renderOrder[logicShipY + 2][logicShipX].isShip = false; 
 
-                if(level[y][x].type == 3 && level[y][x].height < player.height){
-                    drawSprite(tileX, tileY, enemyShadow);   
-                    drawSprite(tileX, tileY - (player.heightStep * level[y][x].height), enemy);   
-                }
-                
-                if (renderOrder[y][x].isShip && !isDefeat){   
-                    drawSprite(player.x, player.y, ship);
-                }
-                
-                if(level[y][x].type == 2  && level[y][x].height >= player.height){
-                    for(int height = 0; height < level[y][x].height; ++height){
-                        drawSprite(tileX, tileY - (height * 8), wall);
+                        logicShipY = logicShipCoords.y;
+
+                        renderOrder[logicShipY][logicShipX].isShip = true;
+                        renderOrder[logicShipY + 1][logicShipX].isShip = true; 
+                        renderOrder[logicShipY + 2][logicShipX].isShip = true; 
+
                     }
-                }
-
-                if(level[y][x].type == 3 && level[y][x].height >= player.height){
-                    auto it = enemys.find({x, y});
-                    if (it != enemys.end()) {
-                        Enemy& e = it->second;
-                        drawSprite(tileX, tileY, enemyShadow);   
-                        if(e.expFrame == 0) drawSprite(tileX, tileY - (player.heightStep * level[y][x].height), enemy);  
-                        else{
-                            if(e.expFrame >= 1 && e.expFrame < 5) {
-                                drawSprite(tileX, tileY - (level[y][x].height * player.heightStep), expFrame1); 
-                                ++e.expFrame;
-                            }
-                            else if(e.expFrame >= 5 && e.expFrame < 10) {
-                                drawSprite(tileX, tileY - (level[y][x].height * player.heightStep), expFrame2);
-                                ++e.expFrame;
-                            }
-                            else if(e.expFrame >= 10 && e.expFrame < 15) {
-                                drawSprite(tileX, tileY - (level[y][x].height * player.heightStep), expFrame3); 
-                                ++e.expFrame;
-                            }
-                            else if (e.expFrame >= 15 && e.expFrame < 20) e.expFrame = 20;
-                        }
-                        break;
+                
+                    if (renderOrder[y][x].isShip && !isDefeat){
+                        drawSprite(player.x, player.y + (player.height * player.heightStep), shipShadow);
                     }
                         
-                }               
+
+                    if(level[y][x].type == 2 && level[y][x].height < player.height){
+                        for(int height = 0; height < level[y][x].height; ++height){
+                            drawSprite(tileX, tileY - (height * 8), wall);
+                        }
+                    }
+
+                    if(level[y][x].type == 3 && level[y][x].height < player.height){
+                        auto it = enemys.find({x, y});
+                        if (it != enemys.end()) {
+                            Enemy& e = it->second;
+                            drawSprite(tileX, tileY, enemyShadow);   
+                            if(e.expFrame == 0) {
+                                int8_t animationOffset = 0;
+                                if(animationFrame == 0) animationOffset = 0;
+                                else if (animationFrame == 5) animationOffset = 1;
+                                else if(animationFrame == 10) animationOffset = 0;
+                                else if(animationFrame == 15) animationOffset = -1;
+                                
+                                drawSprite(tileX, tileY - (player.heightStep * level[y][x].height) + animationOffset, enemy);  
+
+                            }
+                            else{
+                                if(e.expFrame >= 1 && e.expFrame < 5) {
+                                    drawSprite(tileX, tileY - (level[y][x].height * player.heightStep), expFrame1); 
+                                    ++e.expFrame;
+                                }
+                                else if(e.expFrame >= 5 && e.expFrame < 10) {
+                                    drawSprite(tileX, tileY - (level[y][x].height * player.heightStep), expFrame2);
+                                    ++e.expFrame;
+                                }
+                                else if(e.expFrame >= 10 && e.expFrame < 15) {
+                                    drawSprite(tileX, tileY - (level[y][x].height * player.heightStep), expFrame3); 
+                                    ++e.expFrame;
+                                }
+                                else if (e.expFrame >= 15 && e.expFrame < 20) e.expFrame = 20;
+                            }
+                        }
+                    }
+                    
+                    if (renderOrder[y][x].isShip && !isDefeat){   
+                        drawSprite(player.x, player.y, ship);
+                    }
+                    
+                    if(level[y][x].type == 2  && level[y][x].height >= player.height){
+                        for(int height = 0; height < level[y][x].height; ++height){
+                            drawSprite(tileX, tileY - (height * 8), wall);
+                        }
+                    }
+
+                    if(level[y][x].type == 3 && level[y][x].height >= player.height){
+                        auto it = enemys.find({x, y});
+                        if (it != enemys.end()) {
+                            Enemy& e = it->second;
+                            drawSprite(tileX, tileY, enemyShadow);   
+                            if(e.expFrame == 0){
+                                int8_t animationOffset = 0;
+                                if(animationFrame >= 0 && animationFrame < 5) animationOffset = 0;
+                                else if (animationFrame >= 5 && animationFrame < 10) animationOffset = 1;
+                                else if(animationFrame >= 10 && animationFrame < 15) animationOffset = 0;
+                                else if(animationFrame >= 15) animationOffset = -1;
+                                
+                                drawSprite(tileX, tileY - (player.heightStep * level[y][x].height) + animationOffset, enemy); 
+                            }
+                            else{
+                                if(e.expFrame >= 1 && e.expFrame < 5) {
+                                    drawSprite(tileX, tileY - (level[y][x].height * player.heightStep), expFrame1); 
+                                    ++e.expFrame;
+                                }
+                                else if(e.expFrame >= 5 && e.expFrame < 10) {
+                                    drawSprite(tileX, tileY - (level[y][x].height * player.heightStep), expFrame2);
+                                    ++e.expFrame;
+                                }
+                                else if(e.expFrame >= 10 && e.expFrame < 15) {
+                                    drawSprite(tileX, tileY - (level[y][x].height * player.heightStep), expFrame3); 
+                                    ++e.expFrame;
+                                }
+                                else if (e.expFrame >= 15 && e.expFrame < 20) e.expFrame = 20;
+                            }
+                        }
+                            
+                    }               
+                }
             }
-        }
+
+            
+        }        
+
+        //draw self explosion
+            if(selfExpFrame >= 1 && selfExpFrame < 5) {
+                drawSprite(player.x, player.y, expFrame1); 
+                ++selfExpFrame;
+            }
+            else if(selfExpFrame >= 5 && selfExpFrame < 10) {
+                drawSprite(player.x, player.y, expFrame2);
+                ++selfExpFrame;
+            }
+            else if(selfExpFrame >= 10 && selfExpFrame < 15) {
+                drawSprite(player.x, player.y, expFrame3); 
+                ++selfExpFrame;
+            }
+            else if (selfExpFrame >= 15 && selfExpFrame < 20) ++selfExpFrame;
+
+            //draw bullets
+            for (auto& b : bullets) {
+                if(b.dir == 1) drawSprite(b.x, b.y, playerBullet);
+                else if(b.dir == -1) drawSprite(b.x, b.y, enemyBullet);
+            }
 
         //delete enemys
         for(auto it = enemys.begin(); it != enemys.end(); ) {
@@ -365,35 +428,20 @@ void gameLoop(const levelTile (&level)[Rows][Cols], Backend& backend){
                 }
         }
 
-        //draw self explosion
-        if(selfExpFrame >= 1 && selfExpFrame < 5) {
-            drawSprite(player.x, player.y, expFrame1); 
-            ++selfExpFrame;
+        if(isDefeat && selfExpFrame >= 20){
+            initScreen();
+            backend.present(screenBuffer, prewFrame);
+            backend.drawCenterdText("Game Over!\n Press R to restart");
         }
-        else if(selfExpFrame >= 5 && selfExpFrame < 10) {
-            drawSprite(player.x, player.y, expFrame2);
-            ++selfExpFrame;
-        }
-        else if(selfExpFrame >= 10 && selfExpFrame < 15) {
-            drawSprite(player.x, player.y, expFrame3); 
-            ++selfExpFrame;
-        }
-        else if (selfExpFrame >= 15) selfExpFrame = 0;
-        
 
-        //draw bullets
-        for (auto& b : bullets) {
-            if(b.dir == 1) drawSprite(b.x, b.y, playerBullet);
-            else if(b.dir == -1) drawSprite(b.x, b.y, enemyBullet);
-        }
 
         keyCode = backend.getKey();
 
         //contorl
         if (keyCode == 27) {
-            return;
+            return false;
         }
-        else if (keyCode == 32 && bulletColldown == 0) {
+        else if (keyCode == 32 && bulletColldown == 0 && !isDefeat) {
             Bullet b;
             b.x = player.x + 10; 
             b.y = player.y - 5; 
@@ -401,7 +449,7 @@ void gameLoop(const levelTile (&level)[Rows][Cols], Backend& backend){
             b.active = true;
             b.height = player.height;
             bullets.push_back(b);
-            bulletColldown = 10;
+            bulletColldown = 5;
         }
         else if(isMoving){
             if (keyCode == 1000){
@@ -421,6 +469,21 @@ void gameLoop(const levelTile (&level)[Rows][Cols], Backend& backend){
             isDefeat = false;
             isMoving = true;
             pixelOffest = 0;
+            player.x = 10;
+            player.y = 75 - (120 - SCREEN_H);
+            player.height = 1;
+            selfExpFrame = 0;
+            enemys.clear();
+            bullets.clear();
+            for(int y = 0; y < Rows; ++y){
+                for(int x = 0; x < Cols; ++x){
+                    if(level[y][x].type == 3){
+                        Enemy e;
+                        e.x = x; e.y = y;
+                        enemys[{x, y}] = e;
+                    }
+                }
+            }
         }
         
 
@@ -432,94 +495,103 @@ void gameLoop(const levelTile (&level)[Rows][Cols], Backend& backend){
         Coords shipHitboxLowerLogicPoint = screenToLogic(shipHitboxLowerScreenPoint.x, shipHitboxLowerScreenPoint.y + player.heightStep, startX, startY, Rows, pixelOffest);
 
         if (!isDefeat){
-        if(level[shipHitboxUpperLogicPoint.y][shipHitboxUpperLogicPoint.x].type == 2 || level[shipHitboxUpperLogicPoint.y + 1][shipHitboxUpperLogicPoint.x].type == 2 || level[shipHitboxUpperLogicPoint.y - 1][shipHitboxUpperLogicPoint.x].type == 2 ||
-            level[shipHitboxUpperLogicPoint.y][shipHitboxUpperLogicPoint.x].type == 3 || level[shipHitboxUpperLogicPoint.y + 1][shipHitboxUpperLogicPoint.x].type == 3 || level[shipHitboxUpperLogicPoint.y - 1][shipHitboxUpperLogicPoint.x].type == 3){
-            for(int i = -1; i < 2; ++i){          
-                int x = shipHitboxUpperLogicPoint.x;
-                int y = shipHitboxUpperLogicPoint.y + i;
-                int j = y - Rows;
-                
-                Coords wallMinPoit(startX - (j * xOffset) + (x * xOffset) - (pixelOffest * 2) + 3, startY + (j * yOffset) + (x * yOffset) + pixelOffest + 13);
-                Coords wallMaxPoit(startX - (j * xOffset) + (x * xOffset) - (pixelOffest * 2) + 13, startY + (j * yOffset) + (x * yOffset) + pixelOffest + 3);
+            if(level[shipHitboxUpperLogicPoint.y][shipHitboxUpperLogicPoint.x].type == 2 || level[shipHitboxUpperLogicPoint.y + 1][shipHitboxUpperLogicPoint.x].type == 2 || level[shipHitboxUpperLogicPoint.y - 1][shipHitboxUpperLogicPoint.x].type == 2 ||
+                level[shipHitboxUpperLogicPoint.y][shipHitboxUpperLogicPoint.x].type == 3 || level[shipHitboxUpperLogicPoint.y + 1][shipHitboxUpperLogicPoint.x].type == 3 || level[shipHitboxUpperLogicPoint.y - 1][shipHitboxUpperLogicPoint.x].type == 3){
+                for(int i = -1; i < 2; ++i){          
+                    int x = shipHitboxUpperLogicPoint.x;
+                    int y = shipHitboxUpperLogicPoint.y + i;
+                    int j = y - Rows;
+                    
+                    Coords wallMinPoit(startX - (j * xOffset) + (x * xOffset) - (pixelOffest * 2) + 3, startY + (j * yOffset) + (x * yOffset) + pixelOffest + 13);
+                    Coords wallMaxPoit(startX - (j * xOffset) + (x * xOffset) - (pixelOffest * 2) + 13, startY + (j * yOffset) + (x * yOffset) + pixelOffest + 3);
 
-                if(((wallMinPoit.x <= (shipHitboxUpperScreenPoint.x) && (shipHitboxUpperScreenPoint.x) <= wallMaxPoit.x) && (wallMinPoit.y >= (shipHitboxUpperScreenPoint.y) 
-                    && (shipHitboxUpperScreenPoint.y) >= wallMaxPoit.y) && (level[y][x].type == 2) && level[y][x].height >= player.height)){
-                    isMoving = false;
-                    isDefeat = true;
-                    selfExpFrame = 1;
-                }
-                else if(((wallMinPoit.x <= (shipHitboxUpperScreenPoint.x) && (shipHitboxUpperScreenPoint.x) <= wallMaxPoit.x) && (wallMinPoit.y >= (shipHitboxUpperScreenPoint.y) 
-                    && (shipHitboxUpperScreenPoint.y) >= wallMaxPoit.y) && (level[y][x].type == 3) && level[y][x].height == player.height)){
-                    auto it_enemy = enemys.find({x, y});
-                    if (it_enemy != enemys.end() && it_enemy->second.expFrame == 0) {
+                    if(((wallMinPoit.x <= (shipHitboxUpperScreenPoint.x) && (shipHitboxUpperScreenPoint.x) <= wallMaxPoit.x) && (wallMinPoit.y >= (shipHitboxUpperScreenPoint.y) 
+                        && (shipHitboxUpperScreenPoint.y) >= wallMaxPoit.y) && (level[y][x].type == 2) && level[y][x].height >= player.height)){
                         isMoving = false;
                         isDefeat = true;
                         selfExpFrame = 1;
                     }
+                    else if(((wallMinPoit.x <= (shipHitboxUpperScreenPoint.x) && (shipHitboxUpperScreenPoint.x) <= wallMaxPoit.x) && (wallMinPoit.y >= (shipHitboxUpperScreenPoint.y) 
+                        && (shipHitboxUpperScreenPoint.y) >= wallMaxPoit.y) && (level[y][x].type == 3) && level[y][x].height == player.height)){
+                        auto it_enemy = enemys.find({x, y});
+                        if (it_enemy != enemys.end() && it_enemy->second.expFrame == 0) {
+                            isMoving = false;
+                            isDefeat = true;
+                            selfExpFrame = 1;
+                        }
+                    }
                 }
             }
-        }
 
-        if(level[shipHitboxLowerLogicPoint.y][shipHitboxLowerLogicPoint.x].type == 2 || level[shipHitboxLowerLogicPoint.y + 1][shipHitboxLowerLogicPoint.x].type == 2 || level[shipHitboxLowerLogicPoint.y - 1][shipHitboxLowerLogicPoint.x].type == 2 ||
-            level[shipHitboxLowerLogicPoint.y][shipHitboxLowerLogicPoint.x].type == 3 || level[shipHitboxLowerLogicPoint.y + 1][shipHitboxLowerLogicPoint.x].type == 3 || level[shipHitboxLowerLogicPoint.y - 1][shipHitboxLowerLogicPoint.x].type == 3){
-            for(int i = -1; i < 2; ++i){          
-                int x = shipHitboxLowerLogicPoint.x;
-                int y = shipHitboxLowerLogicPoint.y + i;
-                int j = y - Rows;
-                
-                Coords wallMinPoit(startX - (j * xOffset) + (x * xOffset) - (pixelOffest * 2) + 3, startY + (j * yOffset) + (x * yOffset) + pixelOffest + 13);
-                Coords wallMaxPoit(startX - (j * xOffset) + (x * xOffset) - (pixelOffest * 2) + 13, startY + (j * yOffset) + (x * yOffset) + pixelOffest + 3);
+            if(level[shipHitboxLowerLogicPoint.y][shipHitboxLowerLogicPoint.x].type == 2 || level[shipHitboxLowerLogicPoint.y + 1][shipHitboxLowerLogicPoint.x].type == 2 || level[shipHitboxLowerLogicPoint.y - 1][shipHitboxLowerLogicPoint.x].type == 2 ||
+                level[shipHitboxLowerLogicPoint.y][shipHitboxLowerLogicPoint.x].type == 3 || level[shipHitboxLowerLogicPoint.y + 1][shipHitboxLowerLogicPoint.x].type == 3 || level[shipHitboxLowerLogicPoint.y - 1][shipHitboxLowerLogicPoint.x].type == 3){
+                for(int i = -1; i < 2; ++i){          
+                    int x = shipHitboxLowerLogicPoint.x;
+                    int y = shipHitboxLowerLogicPoint.y + i;
+                    int j = y - Rows;
+                    
+                    Coords wallMinPoit(startX - (j * xOffset) + (x * xOffset) - (pixelOffest * 2) + 3, startY + (j * yOffset) + (x * yOffset) + pixelOffest + 13);
+                    Coords wallMaxPoit(startX - (j * xOffset) + (x * xOffset) - (pixelOffest * 2) + 13, startY + (j * yOffset) + (x * yOffset) + pixelOffest + 3);
 
-                if((wallMinPoit.x <= (shipHitboxLowerScreenPoint.x) && (shipHitboxLowerScreenPoint.x) <= wallMaxPoit.x) && (wallMinPoit.y >= (shipHitboxLowerScreenPoint.y) 
-                    && (shipHitboxLowerScreenPoint.y) >= wallMaxPoit.y) && (level[y][x].type == 2)  && level[y][x].height >= player.height){
-                    isMoving = false;
-                    isDefeat = true;
-                    selfExpFrame = 1;
-                }
-                else if((wallMinPoit.x <= (shipHitboxLowerScreenPoint.x) && (shipHitboxLowerScreenPoint.x) <= wallMaxPoit.x) && (wallMinPoit.y >= (shipHitboxLowerScreenPoint.y) 
-                    && (shipHitboxLowerScreenPoint.y) >= wallMaxPoit.y) && (level[y][x].type == 3)  && level[y][x].height == player.height){
-                    auto it_enemy = enemys.find({x, y});
-                    if (it_enemy != enemys.end() && it_enemy->second.expFrame == 0) {
+                    if((wallMinPoit.x <= (shipHitboxLowerScreenPoint.x) && (shipHitboxLowerScreenPoint.x) <= wallMaxPoit.x) && (wallMinPoit.y >= (shipHitboxLowerScreenPoint.y) 
+                        && (shipHitboxLowerScreenPoint.y) >= wallMaxPoit.y) && (level[y][x].type == 2)  && level[y][x].height >= player.height){
                         isMoving = false;
                         isDefeat = true;
                         selfExpFrame = 1;
                     }
+                    else if((wallMinPoit.x <= (shipHitboxLowerScreenPoint.x) && (shipHitboxLowerScreenPoint.x) <= wallMaxPoit.x) && (wallMinPoit.y >= (shipHitboxLowerScreenPoint.y) 
+                        && (shipHitboxLowerScreenPoint.y) >= wallMaxPoit.y) && (level[y][x].type == 3)  && level[y][x].height == player.height){
+                        auto it_enemy = enemys.find({x, y});
+                        if (it_enemy != enemys.end() && it_enemy->second.expFrame == 0) {
+                            isMoving = false;
+                            isDefeat = true;
+                            selfExpFrame = 1;
+                        }
+                    }
                 }
             }
-        }
 
-        //bullet collision
+            //bullet collision
 
-        int playerLeft   = shipHitboxLowerScreenPoint.x;  
-        int playerRight  = shipHitboxUpperScreenPoint.x;   
-        int playerTop    = shipHitboxUpperScreenPoint.y;  
-        int playerBottom = shipHitboxLowerScreenPoint.y;   
-        const Pixel debugPixel[1][1] = {{{{1,255,3}, false}}};
+            int playerLeft   = shipHitboxLowerScreenPoint.x;  
+            int playerRight  = shipHitboxUpperScreenPoint.x;   
+            int playerTop    = shipHitboxUpperScreenPoint.y;  
+            int playerBottom = shipHitboxLowerScreenPoint.y;   
+            
 
-        for (auto& b : bullets) {
-            if (b.dir == -1 && b.active && b.height == player.height) {
-                int bulletLeft   = b.x + 4;
-                int bulletRight  = b.x + 11 ;
-                int bulletTop    = b.y + 6 + (b.height * player.heightStep);
-                int bulletBottom = b.y + 10 + (b.height * player.heightStep);
+            for (auto& b : bullets) {
+                if (b.dir == -1 && b.active && b.height == player.height) {
+                    int bulletLeft   = b.x + 4;
+                    int bulletRight  = b.x + 11 ;
+                    int bulletTop    = b.y + 6 + (b.height * player.heightStep);
+                    int bulletBottom = b.y + 10 + (b.height * player.heightStep);
 
-                if (playerLeft < bulletRight && playerRight > bulletLeft &&
-                    playerTop < bulletBottom && playerBottom > bulletTop) {
-                    isDefeat = true;
-                    isMoving = false;
-                    selfExpFrame = 1;
-                    b.active = false; 
-                    break;
+                    if (playerLeft < bulletRight && playerRight > bulletLeft &&
+                        playerTop < bulletBottom && playerBottom > bulletTop) {
+                        isDefeat = true;
+                        isMoving = false;
+                        selfExpFrame = 1;
+                        b.active = false; 
+                        break;
+                    }
                 }
             }
-        }
-}
+        }      
+
+        if(animationFrame < 20) ++animationFrame;
+        else animationFrame = 0;
+
         if(isMoving) ++pixelOffest;
-        if(pixelOffest >= Rows * 4) pixelOffest = 0; //сделать нормально завершение уровня;
+        if(pixelOffest >= Rows * 4) return true; //сделать нормально завершение уровня;
 
         if(bulletColldown > 0) --bulletColldown;
 
-        backend.present(screenBuffer, prewFrame);
+        
+
+        if(selfExpFrame < 20){
+            cout << "↑/↓/←/→ – move, Space - shoot, ESC - quit";
+            backend.present(screenBuffer, prewFrame);
+        }
         auto frameEnd = std::chrono::steady_clock::now();
         auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(frameEnd - frameStart).count();
         int sleepTime = frameTime - elapsed;
@@ -541,22 +613,63 @@ int main() {
         return 1;
     } 
 
-    initScreen();
     std::ios_base::sync_with_stdio(false);
 
     while (true){
-        if (state == 1){
-            mainMenuLoop();
-        }
-        else if (state == 0){
+        if (state == 0){
+            cout << "\033[0m" << "\x1b[2J";
             break;
         }
+        else if (state == 1){
+            cout << "\033[0m" << "\x1b[2J";
+            initScreen();
+            backend.present(screenBuffer, prewFrame);
+            backend.drawCenterdText("Gnorp\nPress enter to start...");
+            while (true){
+                int key = backend.getKey();
+
+                if(key == 13){ state = 2; break;}
+                else if(key == 27){state = 0; break;}
+                std::this_thread::sleep_for(std::chrono::milliseconds(10));
+            }
+        }
+        
         else if(state == 2){
-            gameLoop(level1, backend);
-            state = 0;
+            cout << "\033[0m" << "\x1b[2J";
+            initScreen();
+            backend.present(screenBuffer, prewFrame);
+            backend.drawCenterdText("Level 1");
+            std::this_thread::sleep_for(std::chrono::milliseconds(1500));
+            if (gameLoop(level1, backend)) {
+                initScreen();
+                backend.present(screenBuffer, prewFrame);
+                backend.drawCenterdText("You win!\nNext level...");
+                ++state;
+                std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+            }
+            else state = 1;
+            
         }
         else if(state == 3){
-            // gameLoop(level2, backend);
+            cout << "\033[0m" << "\x1b[2J";
+            initScreen();
+            backend.present(screenBuffer, prewFrame);
+            backend.drawCenterdText("Level 2");
+            std::this_thread::sleep_for(std::chrono::milliseconds(1500));
+            if (gameLoop(level2, backend)) {
+                initScreen();
+                backend.present(screenBuffer, prewFrame);
+                backend.drawCenterdText("You win!\nThanks for playing\n Press enter to go back to main menu");
+                state = 1;
+                while (true){
+                    int key = backend.getKey();
+
+                    if(key == 13){ state = 1; break;}
+                    else if(key == 27){state = 0; break;}
+                    std::this_thread::sleep_for(std::chrono::milliseconds(10));
+            }
+            }
+            else state = 1;
         }
     }
    

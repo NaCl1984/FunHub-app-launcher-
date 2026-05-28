@@ -1,0 +1,46 @@
+name: Manual C++ Build (multi-OS)
+
+on:
+  workflow_dispatch:   # Ручной запуск
+    inputs:
+      build_type:
+        description: 'Тип сборки'
+        required: true
+        default: 'Release'
+        type: choice
+        options:
+          - Release
+          - Debug
+      subproject_path:
+        description: 'Путь к C++ подпроекту (относительно корня репо)'
+        required: true
+        default: 'cpp-subproject'
+        type: string
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Configure CMake
+        working-directory: ${{ github.workspace }}/${{ github.event.inputs.subproject_path }}
+        run: cmake -B build -DCMAKE_BUILD_TYPE=${{ github.event.inputs.build_type }}
+
+      - name: Build
+        working-directory: ${{ github.workspace }}/${{ github.event.inputs.subproject_path }}
+        run: cmake --build build --config ${{ github.event.inputs.build_type }}
+
+      - name: Upload artifacts (executables)
+        uses: actions/upload-artifact@v4
+        with:
+          name: cpp-app-${{ matrix.os }}-${{ github.event.inputs.build_type }}
+          path: |
+            ${{ github.workspace }}/${{ github.event.inputs.subproject_path }}/build/
+            !${{ github.workspace }}/${{ github.event.inputs.subproject_path }}/build/CMakeFiles
+            !${{ github.workspace }}/${{ github.event.inputs.subproject_path }}/build/*.dir
+          if-no-files-found: error

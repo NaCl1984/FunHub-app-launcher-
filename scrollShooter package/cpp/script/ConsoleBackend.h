@@ -1,5 +1,7 @@
 #pragma once
 #include "Backend.h"
+#include <string>
+
 
 #ifdef _WIN32
     #include <windows.h>
@@ -23,6 +25,7 @@ public:
     void present(std::vector<std::vector<Pixel>>& currentBuffer,
                 std::vector<std::vector<Pixel>>& previousBuffer) override;
     int getKey() override;
+    void drawCenterdText(std::string text) override;
 
 private:
     int width, height;
@@ -30,7 +33,8 @@ private:
     int prewFgR = -1, prewFgG = -1, prewFgB = -1;
     int prewBgR = -1, prewBgG = -1, prewBgB = -1;
 
-    TerminalSize getTerminalSize();
+    static TerminalSize getTerminalSize();
+    void writeToConsole(std::string output);
 #ifdef _WIN32
     HANDLE hStdin;
     DWORD originalConsoleMode;
