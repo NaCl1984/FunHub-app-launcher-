@@ -20,6 +20,7 @@ on:
 jobs:
   build:
     strategy:
+      fail-fast: false
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
     runs-on: ${{ matrix.os }}
@@ -40,12 +41,52 @@ jobs:
         working-directory: ${{ github.workspace }}/${{ github.event.inputs.subproject_path }}
         run: cmake --build build --config ${{ github.event.inputs.build_type }}
 
-      - name: Upload artifacts
+      # Шаг для артефактов на Windows (.exe, .dll, .lib, .exp)
+      - name: Upload Windows Artifacts
+        if: runner.os == 'Windows'
         uses: actions/upload-artifact@v4
         with:
-          name: cpp-app-${{ matrix.os }}-${{ github.event.inputs.build_type }}
+          name: cpp-build-windows-${{ github.event.inputs.build_type }}
           path: |
-            ${{ github.workspace }}/${{ github.event.inputs.subproject_path }}/build/
-            !${{ github.workspace }}/${{ github.event.inputs.subproject_path }}/build/CMakeFiles
-            !${{ github.workspace }}/${{ github.event.inputs.subproject_path }}/build/*.dir
+            ${{ github.workspace }}/${{ github.event.inputs.subproject_path }}/build/**/*.exe
+            ${{ github.workspace }}/${{ github.event.inputs.subproject_path }}/build/**/*.dll
+            ${{ github.workspace }}/${{ github.event.inputs.subproject_path }}/build/**/*.lib
+            ${{ github.workspace }}/${{ github.event.inputs.subproject_path }}/build/**/*.exp
+          if-no-files-found: error
+
+      # Шаг для артефактов на Linux (.so, .a и исполняемые бинарники)
+      - name: Upload Linux Artifacts
+        if: runner.os == 'Linux'
+        uses: actions/upload-artifact@v4
+        with:
+          name: cpp-build-linux-${{ github.event.inputs.build_type }}
+          path: |
+            ${{ github.workspace }}/${{ github.event.inputs.subproject_path }}/build/**/*.so
+            ${{ github.workspace }}/${{ github.event.inputs.subproject_path }}/build/**/*.a
+            ${{ github.workspace }}/${{ github.event.inputs.subproject_path }}/build/lib*.so*
+            ${{ github.workspace }}/${{ github.event.inputs.subproject_path }}/build/*
+          # Исключаем временные папки систем сборки
+          exclude: |
+            ${{ github.workspace }}/${{ github.event.inputs.subproject_path }}/build/CMakeFiles/**
+            ${{ github.workspace }}/${{ github.event.inputs.subproject_path }}/build/**/*.ninja
+            ${{ github.workspace }}/${{ github.event.inputs.subproject_path }}/build/CMakeCache.txt
+            ${{ github.workspace }}/${{ github.event.inputs.subproject_path }}/build/cmake_install.cmake
+            ${{ github.workspace }}/${{ github.event.inputs.subproject_path }}/build/Makefile
+          if-no-files-found: error
+
+      # Шаг для артефактов на macOS (.dylib, .a и исполняемые файлы)
+      - name: Upload macOS Artifacts
+        if: runner.os == 'macOS'
+        uses: actions/upload-artifact@v4
+        with:
+          name: cpp-build-macos-${{ github.event.inputs.build_type }}
+          path: |
+            ${{ github.workspace }}/${{ github.event.inputs.subproject_path }}/build/**/*.dylib
+            ${{ github.workspace }}/${{ github.event.inputs.subproject_path }}/build/**/*.a
+            ${{ github.workspace }}/${{ github.event.inputs.subproject_path }}/build/*
+          exclude: |
+            ${{ github.workspace }}/${{ github.event.inputs.subproject_path }}/build/CMakeFiles/**
+            ${{ github.workspace }}/${{ github.event.inputs.subproject_path }}/build/CMakeCache.txt
+            ${{ github.workspace }}/${{ github.event.inputs.subproject_path }}/build/cmake_install.cmake
+            ${{ github.workspace }}/${{ github.event.inputs.subproject_path }}/build/Makefile
           if-no-files-found: error
