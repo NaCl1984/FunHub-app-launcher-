@@ -5,9 +5,17 @@
 #include <array>
 #include <cstdint>
 #include "uint4_t.h"
+#include <algorithm>
 
 #ifdef _WIN32
+    
     #include <windows.h>
+
+#elif __linux__
+
+    #include <termios.h>
+    #include <unistd.h>
+
 #endif
 
 namespace conback{
@@ -84,6 +92,9 @@ private:
 
     PixelStyle m_style = PixelStyle::Normal;
 
+    uint4_t m_fgIdx = DEFAULT_FG_IDX;
+    uint4_t m_bgIdx = DEFAULT_BG_IDX;
+
     #ifdef _WIN32
 
         std::unordered_map<int, bool> currentState; 
@@ -98,9 +109,6 @@ private:
         static bool IsConsoleInFocus();
 
         WORD m_originalTextAttr = 0;
-        
-        uint4_t m_fgIdx = DEFAULT_FG_IDX;
-        uint4_t m_bgIdx = DEFAULT_BG_IDX;
 
     #elif __linux__
 

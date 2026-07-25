@@ -1,3 +1,15 @@
+#ifndef NOMINMAX
+    #define NOMINMAX
+#endif
+
+#ifdef min
+    #undef min
+#endif
+
+#ifdef max
+    #undef max
+#endif
+
 #include "ConsoleBackend.h"
 #include <array>
 #include <vector>
@@ -5,8 +17,11 @@
 #include <sstream>
 #include <iomanip>
 #include "uint4_t.h"
+#include <algorithm>
 
 // includes
+
+
 
 #ifdef _WIN32
 
@@ -498,8 +513,8 @@ void ConsoleBackend::printImgTrueColor(std::vector<ColorRGB> pixels, int width){
     switch(m_style){
         case PixelStyle::Small : 
 
-            for(int y = 0; y < min(rowsCount, maxHeight); y += 2){
-                for(int x = 0; x < min(width, maxWidth); ++x){
+            for(int y = 0; y < std::min(rowsCount, maxHeight); y += 2){
+                for(int x = 0; x < std::min(width, maxWidth); ++x){
                     if(x + (width * y) + width < static_cast<int>(pixels.size())){
                         const ColorRGB &upP = pixels[x + (width * y)];
                         const ColorRGB &btmP = pixels[x + (width * y) + width];
@@ -525,8 +540,8 @@ void ConsoleBackend::printImgTrueColor(std::vector<ColorRGB> pixels, int width){
 
         case PixelStyle::Normal :
 
-            for(int y = 0; y < min(rowsCount, maxHeight); ++y){
-                for(int x = 0; x < min(width, maxWidth) ; ++x){
+            for(int y = 0; y < std::min(rowsCount, maxHeight); ++y){
+                for(int x = 0; x < std::min(width, maxWidth) ; ++x){
                     if(x + (width * y) < static_cast<int>(pixels.size())){
                         const ColorRGB &p = pixels[x + (width * y)];
                         
@@ -543,8 +558,8 @@ void ConsoleBackend::printImgTrueColor(std::vector<ColorRGB> pixels, int width){
 
         case PixelStyle::Big :
 
-            for(int y = 0; y < min(rowsCount, maxHeight); ++y){
-                for(int x = 0; x < min(width, maxWidth) ; ++x){
+            for(int y = 0; y < std::min(rowsCount, maxHeight); ++y){
+                for(int x = 0; x < std::min(width, maxWidth) ; ++x){
                     if(x + (width * y) < static_cast<int>(pixels.size())){
                         const ColorRGB &p = pixels[x + (width * y)];
                         
@@ -565,23 +580,23 @@ void ConsoleBackend::printImgTrueColor(std::vector<ColorRGB> pixels, int width){
     // horizontal shift
 
     if(m_alignment == Alignment::Center || m_alignment == Alignment::CenterBottom || m_alignment == Alignment::CenterTop){
-        xOffset = max(0, (int)(tWidth / 2) - (int)((width * pixelWidthInCols) / 2));
+        xOffset = std::max(0, (int)(tWidth / 2) - (int)((width * pixelWidthInCols) / 2));
     } 
     
     else if(m_alignment == Alignment::RightTop || m_alignment == Alignment::RightCenter || m_alignment == Alignment::RightBottom){
-        xOffset = max(0, tWidth - (width * pixelWidthInCols));
+        xOffset = std::max(0, tWidth - (width * pixelWidthInCols));
     }
 
     // vertical shift
 
-    int lCount = min(rowsCount, maxHeight);
+    int lCount = std::min(rowsCount, maxHeight);
 
     if(m_alignment == Alignment::LeftCenter || m_alignment == Alignment::Center || m_alignment == Alignment::RightCenter){
-        yOffset = max(0, (int)(tHeight / 2) - (int)(lCount / 2) );
+        yOffset = std::max(0, (int)(tHeight / 2) - (int)(lCount / 2) );
     }
 
     else if(m_alignment == Alignment::LeftBottom || m_alignment == Alignment::CenterBottom || m_alignment == Alignment::RightBottom){
-        yOffset = max(0, tHeight - lCount);
+        yOffset = std::max(0, tHeight - lCount);
     }
 
     std::string newStr;
@@ -613,8 +628,8 @@ void ConsoleBackend::printImg16Colors(std::vector<uint4_t> indices, int width){
         int maxHeight = tHeight * ((m_style == PixelStyle::Small) ? 2 : 1);
 
         COORD bufferSize;
-        bufferSize.X = min(width, maxWidth) * ((m_style == PixelStyle::Big) ? 2 : 1);
-        int rows = min(rowsCount, maxHeight);
+        bufferSize.X = std::min(width, maxWidth) * ((m_style == PixelStyle::Big) ? 2 : 1);
+        int rows = std::min(rowsCount, maxHeight);
         bufferSize.Y = (m_style == PixelStyle::Small) ? ((rows % 2 == 0) ? rows / 2 : (rows  + 1) / 2) : rows ;
 
         std::vector<CHAR_INFO> buffer(bufferSize.X * bufferSize.Y);
@@ -627,23 +642,23 @@ void ConsoleBackend::printImg16Colors(std::vector<uint4_t> indices, int width){
         // horizontal shift
 
         if(m_alignment == Alignment::Center || m_alignment == Alignment::CenterBottom || m_alignment == Alignment::CenterTop){
-            xOffset = max(0, (int)(tWidth / 2) - (int)((width * pixelWidthInCols) / 2));
+            xOffset = std::max(0, (int)(tWidth / 2) - (int)((width * pixelWidthInCols) / 2));
         } 
         
         else if(m_alignment == Alignment::RightTop || m_alignment == Alignment::RightCenter || m_alignment == Alignment::RightBottom){
-            xOffset = max(0, tWidth - (width * pixelWidthInCols));
+            xOffset = std::max(0, tWidth - (width * pixelWidthInCols));
         }
 
         // vertical shift
 
-        int lCount = min(rowsCount, maxHeight);
+        int lCount = std::min(rowsCount, maxHeight);
 
         if(m_alignment == Alignment::LeftCenter || m_alignment == Alignment::Center || m_alignment == Alignment::RightCenter){
-            yOffset = max(0, (int)(tHeight / 2) - (int)(lCount / 2) );
+            yOffset = std::max(0, (int)(tHeight / 2) - (int)(lCount / 2) );
         }
 
         else if(m_alignment == Alignment::LeftBottom || m_alignment == Alignment::CenterBottom || m_alignment == Alignment::RightBottom){
-            yOffset = max(0, tHeight - lCount);
+            yOffset = std::max(0, tHeight - lCount);
         }
 
         writeRegion.Left   = (SHORT)xOffset;
@@ -655,8 +670,8 @@ void ConsoleBackend::printImg16Colors(std::vector<uint4_t> indices, int width){
         switch(m_style){
             case PixelStyle::Small : 
 
-                for(int y = 0; y < min(rowsCount, maxHeight); y += 2){
-                    for(int x = 0; x < min(width, maxWidth); ++x){
+                for(int y = 0; y < std::min(rowsCount, maxHeight); y += 2){
+                    for(int x = 0; x < std::min(width, maxWidth); ++x){
                         
                         CHAR_INFO &ci = buffer[x + (bufferSize.X * y / 2)]; 
 
@@ -691,8 +706,8 @@ void ConsoleBackend::printImg16Colors(std::vector<uint4_t> indices, int width){
 
             case PixelStyle::Normal :
 
-                for(int y = 0; y < min(rowsCount, maxHeight); ++y){
-                    for(int x = 0; x < min(width, maxWidth) ; ++x){
+                for(int y = 0; y < std::min(rowsCount, maxHeight); ++y){
+                    for(int x = 0; x < std::min(width, maxWidth) ; ++x){
                         
                         CHAR_INFO &ci = buffer[x + (bufferSize.X * y)]; 
 
@@ -719,8 +734,8 @@ void ConsoleBackend::printImg16Colors(std::vector<uint4_t> indices, int width){
 
             case PixelStyle::Big :
 
-                for(int y = 0; y < min(rowsCount, maxHeight); ++y){
-                    for(int x = 0; x < min(width, maxWidth) ; ++x){
+                for(int y = 0; y < std::min(rowsCount, maxHeight); ++y){
+                    for(int x = 0; x < std::min(width, maxWidth) ; ++x){
                         
                         CHAR_INFO &ci1 = buffer[x * 2 + (bufferSize.X * y)]; 
                         CHAR_INFO &ci2 = buffer[x * 2 + (bufferSize.X * y) + 1]; 
