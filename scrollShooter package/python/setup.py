@@ -7,7 +7,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setup(
     name="funhub-scroll-shooter",
-    version="0.1.3",
+    version="0.1.5",
     py_modules=["scroll-shooter"],
     description="CLI scroll shooter game for FunHud app-launcher",
     long_description=open("README.md", encoding="utf-8").read(),
