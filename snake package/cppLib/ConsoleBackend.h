@@ -15,6 +15,9 @@
 
     #include <termios.h>
     #include <unistd.h>
+    #include <unistd.h>
+    #include <sys/ioctl.h>
+    #include <cstring>
 
 #endif
 

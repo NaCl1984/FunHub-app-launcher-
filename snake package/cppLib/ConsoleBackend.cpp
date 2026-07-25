@@ -37,6 +37,9 @@
     #include <fcntl.h>
     #include <codecvt>
     #include <locale>
+    #include <unistd.h>
+    #include <sys/ioctl.h>
+    #include <cstring>
 
 #endif
 
